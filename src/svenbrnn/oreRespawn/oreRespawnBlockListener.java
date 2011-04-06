@@ -56,6 +56,8 @@ public class oreRespawnBlockListener extends BlockListener {
             }
 
             if (respawnNeeded) {
+                System.out.println("[oreRespawn] Block auf x:" + BrokenBlock.getX() + " y:" + BrokenBlock.getY() + " z:" + BrokenBlock.getZ() + " abgebaut");
+
                 int blockType = BrokenBlock.getTypeId();
                 int x = BrokenBlock.getX();
                 int y = BrokenBlock.getY();
@@ -67,20 +69,25 @@ public class oreRespawnBlockListener extends BlockListener {
 
                 int maxDistance = stdMaxDistance - 1;
 
-                do {
-                    maxDistance++;
-                    for (int i = x - maxDistance; i < x + maxDistance; i++) {
-                        for (int j = z - maxDistance; j < z + maxDistance; j++) {
-                            for (int k = 0; k < maxheight - 1; i++) {
-                                if (wo.getBlockAt(new Location(wo, x, y, z)).getTypeId() == 0 && wo.getBlockAt(new Location(wo, x, y + 1, z)).getTypeId() != 0) {
-                                    if (wo.getChunkAt(new Location(wo, x, y, z)) != null) {
-                                        BlockList.add(wo.getBlockAt(new Location(wo, x, y, z)));
-                                    }
-                                }
+                maxDistance++;
+                for (int i = x - maxDistance; i < x + maxDistance; i++) {
+                    for (int j = z - maxDistance; j < z + maxDistance; j++) {
+                        for (int k = 0; k < maxheight - 1; i++) {
+                            if (wo.getBlockAt(new Location(wo, x, y, z)).getTypeId() == 0 && wo.getBlockAt(new Location(wo, x, y + 1, z)).getTypeId() != 0) {
+                                BlockList.add(wo.getBlockAt(new Location(wo, x, y, z)));
+                                System.out.println("[oreRespawn] Block in Liste: x:" + x + " y:" + y + " z:" + z + " abgebaut");
+                                break;
                             }
                         }
                     }
-                } while (!BlockList.isEmpty());
+                }
+
+                if(BlockList.isEmpty())
+                {
+                    super.onBlockBreak(event);
+                    System.out.println("[oreRespawn] Keine Position gefunden!");
+                    return;
+                }
 
                 Random rnd = new Random();
                 int tryed = 0;
