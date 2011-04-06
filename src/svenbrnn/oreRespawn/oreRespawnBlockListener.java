@@ -57,6 +57,7 @@ public class oreRespawnBlockListener extends BlockListener {
 
             if (respawnNeeded) {
                 oreRespawnRespawner sp = new oreRespawnRespawner(BrokenBlock, event, stdMaxDistance, maxheight);
+                sp.setPriority(sp.MIN_PRIORITY);
                 sp.run();
             }
         }
