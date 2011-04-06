@@ -28,6 +28,10 @@ public class oreRespawnRespawner extends Thread {
     public oreRespawnRespawner(Block BrokenBlock, BlockBreakEvent event, int stdMaxDistance, int maxheight) {
         super();
         stoprequested = false;
+        this.BrokenBlock = BrokenBlock;
+        this.event = event;
+        this.stdMaxDistance = stdMaxDistance;
+        this.maxheight = maxheight;
     }
 
     public synchronized void requestStop() {
