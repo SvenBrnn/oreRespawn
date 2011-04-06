@@ -72,7 +72,7 @@ public class oreRespawnBlockListener extends BlockListener {
                 maxDistance++;
                 for (int i = x - maxDistance; i < x + maxDistance; i++) {
                     for (int j = z - maxDistance; j < z + maxDistance; j++) {
-                        for (int k = 0; k < maxheight - 1; i++) {
+                        for (int k = 0; k < maxheight - 1; k++) {
                             if (wo.getBlockAt(new Location(wo, x, y, z)).getTypeId() == 0 && wo.getBlockAt(new Location(wo, x, y + 1, z)).getTypeId() != 0) {
                                 BlockList.add(wo.getBlockAt(new Location(wo, x, y, z)));
                                 System.out.println("[oreRespawn] Block in Liste: x:" + x + " y:" + y + " z:" + z + " abgebaut");
