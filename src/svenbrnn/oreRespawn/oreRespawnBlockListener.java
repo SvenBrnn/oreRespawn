@@ -73,17 +73,16 @@ public class oreRespawnBlockListener extends BlockListener {
                 for (int i = x - maxDistance; i < x + maxDistance; i++) {
                     for (int j = z - maxDistance; j < z + maxDistance; j++) {
                         for (int k = 0; k < maxheight - 1; k++) {
-                            if (wo.getBlockAt(new Location(wo, x, y, z)).getTypeId() == 0 && wo.getBlockAt(new Location(wo, x, y + 1, z)).getTypeId() != 0) {
-                                BlockList.add(wo.getBlockAt(new Location(wo, x, y, z)));
-                                System.out.println("[oreRespawn] Block in Liste: x:" + x + " y:" + y + " z:" + z + " abgebaut");
-                                break;
+                            //System.out.println("[oreRespawn] x:" + i + " y:" + k + " z:" + j + "");
+                            if (wo.getBlockAt(new Location(wo, i, k, j)).getTypeId() == 0 && wo.getBlockAt(new Location(wo, i, k + j, z)).getTypeId() != 0) {
+                                BlockList.add(wo.getBlockAt(new Location(wo, i, k, j)));
+                                //System.out.println("[oreRespawn] Block in Liste: x:" + i + " y:" + k + " z:" + j + " abgebaut");
                             }
                         }
                     }
                 }
 
-                if(BlockList.isEmpty())
-                {
+                if (BlockList.isEmpty()) {
                     super.onBlockBreak(event);
                     System.out.println("[oreRespawn] Keine Position gefunden!");
                     return;
@@ -96,19 +95,17 @@ public class oreRespawnBlockListener extends BlockListener {
                     nextInt = rnd.nextInt(BlockList.size());
 
                     Block chBl = BlockList.get(nextInt);
-                    if (chBl.getLightLevel() > 8 && tryed < 20) {
+                    if (chBl.getLightLevel() < 8 && tryed < 20) {
                         continue;
                     } else if (tryed == 20) {
                         break;
                     }
 
                     chBl.setTypeId(blockType);
+                    pl.sendMessage("Block Wurde Erstellt bei: X:" + BlockList.get(nextInt).getX() + " Y:" + BlockList.get(nextInt).getY() + " Z:" + BlockList.get(nextInt).getZ());
+
                     break;
                 } while (true);
-
-                if (tryed != 20) {
-                    pl.sendMessage("Block Wurde Erstellt bei: X:" + BlockList.get(nextInt).getX() + " Y:" + BlockList.get(nextInt).getY() + " Z:" + BlockList.get(nextInt).getZ());
-                }
             }
         }
         super.onBlockBreak(event);
