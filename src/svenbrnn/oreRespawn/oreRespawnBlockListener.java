@@ -95,8 +95,8 @@ public class oreRespawnBlockListener extends BlockListener {
         }
         if(respawnNeeded)
         {
-            blacklist.blackListedBlock.add(event.getBlock());
-            blacklist.writeConfig();
+            //blacklist.blackListedBlock.add(event.getBlock());
+            //blacklist.writeConfig();
         }        
         super.onBlockPlace(event);
     }

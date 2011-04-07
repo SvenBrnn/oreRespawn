@@ -45,7 +45,7 @@ public class oreRespawnRespawner extends Thread {
             }
 
             Block BrokenBlock = brokenBlockList.get(0);
-            System.out.println("[oreRespawn] Block auf x:" + BrokenBlock.getX() + " y:" + BrokenBlock.getY() + " z:" + BrokenBlock.getZ() + " abgebaut");
+            //System.out.println("[oreRespawn] Block auf x:" + BrokenBlock.getX() + " y:" + BrokenBlock.getY() + " z:" + BrokenBlock.getZ() + " abgebaut");
             int blockType = BrokenBlock.getTypeId();
             int x = BrokenBlock.getX();
             int y = BrokenBlock.getY();
@@ -109,6 +109,8 @@ public class oreRespawnRespawner extends Thread {
                 }
 
                 chBl.setTypeId(blockType);
+                brokenBlockList.remove(0);
+                System.out.println("[oreRespawn] Block auf x:" + chBl.getX() + " y:" + chBl.getY() + " z:" + chBl.getZ() + " gespawnt");
                 break;
             } while (true);
         }
