@@ -1,1 +1,13 @@
-Readme on Progress
+Puplished under GNU General Public License
+
+For any damage that may arise from my plugin, I am not responsible.
+
+INSTALL:
+1. Put the Plugin into your Plugin Folder
+2. Start the Server
+3. Change the Config under Plugins/oreRespawn
+4. Restart your Server
+
+
+TODO:
+- add the Blacklist Function
