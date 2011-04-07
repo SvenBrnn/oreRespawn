@@ -15,12 +15,14 @@ public class oreRespawnBlockListener extends BlockListener {
     private final oreRespawnConfig config;
     private int stdMaxDistance = 5;
     private oreRespawnBlacklistWorker blacklist;
+    private oreRespawnRespawner oreRespawn;
 
-    public oreRespawnBlockListener(final oreRespawn plugin, final oreRespawnConfig config, final oreRespawnBlacklistWorker blacklist) {
+    public oreRespawnBlockListener(final oreRespawn plugin, final oreRespawnConfig config, final oreRespawnBlacklistWorker blacklist, final oreRespawnRespawner oreRespawn) {
         this.plugin = plugin;
         this.config = config;
         stdMaxDistance = config.cfgMaxDistance;
         this.blacklist = blacklist;
+        this.oreRespawn = oreRespawn;
     }
 
     @Override
@@ -35,30 +37,24 @@ public class oreRespawnBlockListener extends BlockListener {
                 return;
             }
 
-            int maxheight = 127;
             boolean respawnNeeded = false;
             switch (BrokenBlock.getTypeId()) {
                 case 14:
-                    maxheight = 35;
                     respawnNeeded = true;
                     break;
                 case 15:
-                    maxheight = 67;
                     respawnNeeded = true;
                     break;
                 case 16:
                     respawnNeeded = true;
                     break;
                 case 21:
-                    maxheight = 32;
                     respawnNeeded = true;
                     break;
                 case 56:
-                    maxheight = 19;
                     respawnNeeded = true;
                     break;
                 case 73:
-                    maxheight = 19;
                     respawnNeeded = true;
                     break;
                 default:
@@ -66,8 +62,7 @@ public class oreRespawnBlockListener extends BlockListener {
             }
 
             if (respawnNeeded) {
-                oreRespawnRespawner sp = new oreRespawnRespawner(BrokenBlock, event, stdMaxDistance, maxheight);
-                sp.run();
+                oreRespawn.brokenBlockList.add(BrokenBlock);
             }
         }
         super.onBlockBreak(event);
