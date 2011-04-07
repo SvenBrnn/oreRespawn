@@ -1,12 +1,6 @@
 package svenbrnn.oreRespawn;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.World;
-import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockListener;
 
@@ -34,21 +28,26 @@ public class oreRespawnBlockListener extends BlockListener {
             boolean respawnNeeded = false;
             switch (BrokenBlock.getTypeId()) {
                 case 14:
+                    maxheight = 35;
                     respawnNeeded = true;
                     break;
                 case 15:
+                    maxheight = 67;
                     respawnNeeded = true;
                     break;
                 case 16:
                     respawnNeeded = true;
                     break;
                 case 21:
+                    maxheight = 32;
                     respawnNeeded = true;
                     break;
                 case 56:
+                    maxheight = 19;
                     respawnNeeded = true;
                     break;
                 case 73:
+                    maxheight = 19;
                     respawnNeeded = true;
                     break;
                 default:
