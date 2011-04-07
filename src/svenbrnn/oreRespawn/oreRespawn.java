@@ -1,14 +1,10 @@
 package svenbrnn.oreRespawn;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import org.bukkit.entity.Player;
-import org.bukkit.Server;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.PluginLoader;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
 
@@ -23,13 +19,15 @@ public class oreRespawn extends JavaPlugin {
     private oreRespawnConfig configer;
     private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();
     private oreRespawnBlockListener blockListener;
+    private oreRespawnBlacklistWorker blacklist;
 
     public void onEnable() {
         // TODO: Place any custom enable code here including the registration of any events
         // Register our events
 
         configer = new oreRespawnConfig(this);
-        blockListener = new oreRespawnBlockListener(this, configer);
+        blacklist = new oreRespawnBlacklistWorker(this);
+        blockListener = new oreRespawnBlockListener(this, configer, blacklist);
 
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvent(Event.Type.BLOCK_BREAK, blockListener, Priority.Normal, this);
