@@ -30,6 +30,7 @@ public class oreRespawnBlockListener extends BlockListener {
             if(blacklist.blackListedBlock.contains(BrokenBlock))
             {
                 blacklist.blackListedBlock.remove(BrokenBlock);
+                blacklist.writeConfig();
                 super.onBlockBreak(event);
                 return;
             }
@@ -100,6 +101,7 @@ public class oreRespawnBlockListener extends BlockListener {
         if(respawnNeeded)
         {
             blacklist.blackListedBlock.add(event.getBlock());
+            blacklist.writeConfig();
         }        
         super.onBlockPlace(event);
     }

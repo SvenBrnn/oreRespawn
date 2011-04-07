@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package svenbrnn.oreRespawn;
 
 import java.io.File;
@@ -11,12 +10,14 @@ import java.util.List;
 import org.bukkit.block.Block;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.config.Configuration;
+import org.bukkit.util.config.ConfigurationNode;
 
 /**
  *
  * @author Sven
  */
 public class oreRespawnBlacklistWorker {
+
     private Configuration config;
     private File cfgFile;
     private String file;
@@ -36,7 +37,6 @@ public class oreRespawnBlacklistWorker {
     }
 
     private void configLoader() {
-       
     }
 
     private void createConfig() {
@@ -44,9 +44,17 @@ public class oreRespawnBlacklistWorker {
         config.save();
     }
 
-    public void writeConfig()
-    {
-
+    public void writeConfig() {
+        for (int i = 0; i < blackListedBlock.size(); i++) {
+            ConfigurationNode node = Configuration.getEmptyNode();
+            cfgFile = new File(file);
+            cfgFile.delete();
+            this.config = new Configuration(cfgFile);
+            config.setProperty("blockentry"+i+".x", blackListedBlock.get(i).getX());
+            config.setProperty("blockentry"+i+".y", blackListedBlock.get(i).getY());
+            config.setProperty("blockentry"+i+".z", blackListedBlock.get(i).getZ());
+            config.setProperty("blockentry"+i+".world", blackListedBlock.get(i).getWorld().getName());
+        }
+        config.save();
     }
-    
 }
