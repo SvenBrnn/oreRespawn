@@ -29,14 +29,6 @@ public class oreRespawnBlockListener extends BlockListener {
     public void onBlockBreak(BlockBreakEvent event) {
         Block BrokenBlock = event.getBlock();
         if (config.enabledWorld.contains(BrokenBlock.getWorld())) {
-            if(blacklist.blackListedBlock.contains(BrokenBlock))
-            {
-                blacklist.blackListedBlock.remove(BrokenBlock);
-                blacklist.writeConfig();
-                super.onBlockBreak(event);
-                return;
-            }
-
             boolean respawnNeeded = false;
             switch (BrokenBlock.getTypeId()) {
                 case 14:
@@ -62,6 +54,12 @@ public class oreRespawnBlockListener extends BlockListener {
             }
 
             if (respawnNeeded) {
+                int num = blacklist.isBlockInBlacklist(BrokenBlock);
+                if (num != -1) {
+                    blacklist.removeBlockFromBlacklist(num);
+                    super.onBlockBreak(event);
+                    return;
+                }
                 oreRespawn.brokenBlockList.add(BrokenBlock);
             }
         }
@@ -93,11 +91,9 @@ public class oreRespawnBlockListener extends BlockListener {
             default:
                 respawnNeeded = false;
         }
-        if(respawnNeeded)
-        {
-            //blacklist.blackListedBlock.add(event.getBlock());
-            //blacklist.writeConfig();
-        }        
+        if (respawnNeeded) {
+            blacklist.addBlocksToBlacklist(event.getBlock());
+        }
         super.onBlockPlace(event);
     }
 }

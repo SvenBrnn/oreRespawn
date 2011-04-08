@@ -18,43 +18,23 @@ import org.bukkit.util.config.ConfigurationNode;
  */
 public class oreRespawnBlacklistWorker {
 
-    private Configuration config;
-    private File cfgFile;
-    private String file;
     private JavaPlugin plugin;
-    public List<Block> blackListedBlock;
+    private oreRespawnDatabase db;
 
     oreRespawnBlacklistWorker(JavaPlugin plugin) {
         this.plugin = plugin;
-        file = "plugins/oreRespawn/blacklist.yml";
-        cfgFile = new File(file);
-        this.config = new Configuration(cfgFile);
-        if (!cfgFile.exists()) {
-            this.createConfig();
-        }
-        blackListedBlock = new ArrayList<Block>();
-        this.configLoader();
+        db = new oreRespawnDatabase();
     }
 
-    private void configLoader() {
+    public void addBlocksToBlacklist(Block blackListedBlock) {
+        db.addBlockToBlacklist(blackListedBlock.getX(), blackListedBlock.getY(), blackListedBlock.getZ(), blackListedBlock.getWorld().getName());
     }
 
-    private void createConfig() {
-        config.setProperty("blacklist", "");
-        config.save();
+    public int isBlockInBlacklist(Block bl) {
+        return db.isBlockInBacklist(bl.getX(), bl.getY(), bl.getZ(), bl.getWorld().getName());
     }
 
-    public void writeConfig() {
-        for (int i = 0; i < blackListedBlock.size(); i++) {
-            ConfigurationNode node = Configuration.getEmptyNode();
-            cfgFile = new File(file);
-            cfgFile.delete();
-            this.config = new Configuration(cfgFile);
-            config.setProperty("blockentry"+i+".x", blackListedBlock.get(i).getX());
-            config.setProperty("blockentry"+i+".y", blackListedBlock.get(i).getY());
-            config.setProperty("blockentry"+i+".z", blackListedBlock.get(i).getZ());
-            config.setProperty("blockentry"+i+".world", blackListedBlock.get(i).getWorld().getName());
-        }
-        config.save();
+    public void removeBlockFromBlacklist(int id) {
+        db.deleteBlockFromBlacklist(id);
     }
 }
