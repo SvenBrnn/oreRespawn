@@ -32,8 +32,8 @@ public class oreRespawnDatabase {
             Class.forName("org.sqlite.JDBC");
             conn = DriverManager.getConnection("jdbc:sqlite:" + file);
             Statement sql = conn.createStatement();
-            ResultSet res = sql.executeQuery("CREATE TABLE IF NOT EXISTS ore_blacklist` "
-                    + "(`id` INT( 4 ) NOT NULL AUTO_INCREMENT PRIMARY KEY , "
+            sql.executeQuery("CREATE TABLE IF NOT EXISTS ore_blacklist "
+                    + "(`id` INT( 10 ) NOT NULL PRIMARY KEY , "
                     + "`x` INT( 6 ) NOT NULL ,"
                     + "`y` INT( 6 ) NOT NULL ,"
                     + "`z` INT( 6 ) NOT NULL ,"
@@ -49,7 +49,7 @@ public class oreRespawnDatabase {
             Statement sql = conn.createStatement();
             ResultSet res = sql.executeQuery("INSERT INTO ore_blacklist(x, y, z, world) VALUES('" + x + "','" + y + "','" + z + "','" + world + "')");
         } catch (SQLException ex) {
-            Logger.getLogger(oreRespawnDatabase.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -62,7 +62,7 @@ public class oreRespawnDatabase {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(oreRespawnDatabase.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         }
         return -1;
     }
@@ -73,7 +73,7 @@ public class oreRespawnDatabase {
             Statement sql = conn.createStatement();
             ResultSet res = sql.executeQuery("DELETE FROM ore_blacklist WHERE id='"+id+"'");
         } catch (SQLException ex) {
-            Logger.getLogger(oreRespawnDatabase.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         }
     }
 }
