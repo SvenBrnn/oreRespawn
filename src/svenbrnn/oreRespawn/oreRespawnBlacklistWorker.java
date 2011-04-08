@@ -4,13 +4,8 @@
  */
 package svenbrnn.oreRespawn;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import org.bukkit.block.Block;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.config.Configuration;
-import org.bukkit.util.config.ConfigurationNode;
 
 /**
  *
