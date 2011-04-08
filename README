@@ -10,7 +10,7 @@ INSTALL:
 
 Functions:
 - respawn ore in a Defined Range
-- first blacklisting with SQLLite db
+- blacklisting with SQLLite db
 
 TODO:
-- add the Blacklist Function
+- add delay functions
