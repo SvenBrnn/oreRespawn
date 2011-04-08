@@ -33,7 +33,7 @@ public class oreRespawnDatabase {
             conn = DriverManager.getConnection("jdbc:sqlite:" + file);
             Statement sql = conn.createStatement();
             sql.execute("CREATE TABLE IF NOT EXISTS ore_blacklist "
-                    + "(`id` INT( 10 ) NOT NULL PRIMARY KEY , "
+                    + "(`id` INTEGER NOT NULL PRIMARY KEY , "
                     + "`x` INT( 6 ) NOT NULL ,"
                     + "`y` INT( 6 ) NOT NULL ,"
                     + "`z` INT( 6 ) NOT NULL ,"
