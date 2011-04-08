@@ -32,7 +32,7 @@ public class oreRespawnDatabase {
             Class.forName("org.sqlite.JDBC");
             conn = DriverManager.getConnection("jdbc:sqlite:" + file);
             Statement sql = conn.createStatement();
-            sql.executeQuery("CREATE TABLE IF NOT EXISTS ore_blacklist "
+            sql.execute("CREATE TABLE IF NOT EXISTS ore_blacklist "
                     + "(`id` INT( 10 ) NOT NULL PRIMARY KEY , "
                     + "`x` INT( 6 ) NOT NULL ,"
                     + "`y` INT( 6 ) NOT NULL ,"
@@ -47,7 +47,7 @@ public class oreRespawnDatabase {
     public void addBlockToBlacklist(int x, int y, int z, String world) {
         try {
             Statement sql = conn.createStatement();
-            ResultSet res = sql.executeQuery("INSERT INTO ore_blacklist(x, y, z, world) VALUES('" + x + "','" + y + "','" + z + "','" + world + "')");
+            sql.execute("INSERT INTO ore_blacklist(x, y, z, world) VALUES('" + x + "','" + y + "','" + z + "','" + world + "')");
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
@@ -71,7 +71,7 @@ public class oreRespawnDatabase {
     {
         try {
             Statement sql = conn.createStatement();
-            ResultSet res = sql.executeQuery("DELETE FROM ore_blacklist WHERE id='"+id+"'");
+            sql.execute("DELETE FROM ore_blacklist WHERE id='"+id+"'");
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
