@@ -11,6 +11,7 @@ INSTALL:
 Functions:
 - respawn ore in a Defined Range
 - blacklisting with SQLLite db
+- respawning delay in seconds
 
 TODO:
-- add delay functions
+- add instant spawn command with Permission support
