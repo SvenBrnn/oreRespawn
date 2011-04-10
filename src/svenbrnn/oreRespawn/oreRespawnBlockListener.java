@@ -1,5 +1,7 @@
 package svenbrnn.oreRespawn;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.bukkit.block.Block;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockListener;
@@ -60,7 +62,13 @@ public class oreRespawnBlockListener extends BlockListener {
                     super.onBlockBreak(event);
                     return;
                 }
-                oreRespawn.brokenBlockList.add(BrokenBlock);
+                //oreRespawn.brokenBlockList.add(BrokenBlock);
+                Date dt = new Date();
+                //dt.setTime(dt.getTime() + (1000*config.respawnDelay));
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String uhrzeit = sdf.format(dt);
+
+                blacklist.addBlocksToSpawnList(BrokenBlock, uhrzeit);
             }
         }
         super.onBlockBreak(event);

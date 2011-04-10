@@ -4,6 +4,7 @@
  */
 package svenbrnn.oreRespawn;
 
+import java.util.List;
 import org.bukkit.block.Block;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -16,9 +17,9 @@ public class oreRespawnBlacklistWorker {
     private JavaPlugin plugin;
     private oreRespawnDatabase db;
 
-    oreRespawnBlacklistWorker(JavaPlugin plugin) {
+    oreRespawnBlacklistWorker(JavaPlugin plugin, oreRespawnConfig config) {
         this.plugin = plugin;
-        db = new oreRespawnDatabase();
+        db = new oreRespawnDatabase(plugin.getServer(), config);
     }
 
     public void addBlocksToBlacklist(Block blackListedBlock) {
@@ -31,5 +32,14 @@ public class oreRespawnBlacklistWorker {
 
     public void removeBlockFromBlacklist(int id) {
         db.deleteBlockFromBlacklist(id);
+    }
+
+    public List<Block> getBlocksFromSpawnListAndDelIt()
+    {
+        return db.getBlocksFromSpawnListAndDelIt();
+    }
+
+    public void addBlocksToSpawnList(Block blk, String dateTime) {
+        db.addBlocksToSpawnList(blk.getX(), blk.getY(), blk.getZ(), blk.getWorld().getName(), dateTime);
     }
 }

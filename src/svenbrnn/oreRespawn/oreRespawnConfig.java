@@ -22,6 +22,7 @@ public class oreRespawnConfig {
     private String file;
     private JavaPlugin plugin;
     public int cfgMaxDistance = 0;
+    public int respawnDelay = 0;
     public List<World> enabledWorld;
 
     public oreRespawnConfig() {
@@ -47,6 +48,14 @@ public class oreRespawnConfig {
         enabledWorld = new ArrayList<World>();
         config.load();
         cfgMaxDistance = new Integer((String) config.getProperty("maxDistance"));
+        respawnDelay = new Integer((String) config.getProperty("respawnDelayInSec"));
+
+        if((String) config.getProperty("respawnDelayInSec") == null)
+        {
+            respawnDelay = 0;
+            config.setProperty("respawnDelayInSec", "0");
+        }
+
         for(int i = 0; i < worlds.size(); i++)
         {
             String var = (String) config.getProperty(worlds.get(i).getName() + "enabled");
@@ -81,6 +90,7 @@ public class oreRespawnConfig {
             config.setProperty(worlds.get(i).getName() + "enabled", "true");
         }
         config.setProperty("maxDistance", "50");
+        config.setProperty("respawnDelayInSec", "50");
         config.save();
     }
 }

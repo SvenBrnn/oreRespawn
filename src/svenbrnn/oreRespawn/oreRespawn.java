@@ -27,8 +27,8 @@ public class oreRespawn extends JavaPlugin {
         // Register our events
 
         configer = new oreRespawnConfig(this);
-        blacklist = new oreRespawnBlacklistWorker(this);
-        oreRespawn = new oreRespawnRespawner(configer.cfgMaxDistance);
+        blacklist = new oreRespawnBlacklistWorker(this, configer);
+        oreRespawn = new oreRespawnRespawner(configer.cfgMaxDistance, blacklist);
         blockListener = new oreRespawnBlockListener(this, configer, blacklist, oreRespawn);
 
         PluginManager pm = getServer().getPluginManager();

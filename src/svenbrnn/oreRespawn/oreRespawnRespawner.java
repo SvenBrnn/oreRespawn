@@ -19,12 +19,14 @@ public class oreRespawnRespawner extends Thread {
 
     boolean stoprequested;
     private int stdMaxDistance;
-    public List<Block> brokenBlockList = new ArrayList<Block>();
+    private List<Block> brokenBlockList = new ArrayList<Block>();
+    private oreRespawnBlacklistWorker blacklist;
 
-    public oreRespawnRespawner(int stdMaxDistance) {
+    public oreRespawnRespawner(int stdMaxDistance, oreRespawnBlacklistWorker blacklist) {
         super();
         stoprequested = false;
         this.stdMaxDistance = stdMaxDistance;
+        this.blacklist = blacklist;
         this.setPriority(Thread.MIN_PRIORITY);
     }
 
@@ -36,8 +38,10 @@ public class oreRespawnRespawner extends Thread {
         while (!stoprequested) {
             if(brokenBlockList.isEmpty())
             {
+                brokenBlockList = blacklist.getBlocksFromSpawnListAndDelIt();
+
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(10000);
                 } catch (InterruptedException ex) {
                    
                 }
