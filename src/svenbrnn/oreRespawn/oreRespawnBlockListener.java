@@ -64,11 +64,10 @@ public class oreRespawnBlockListener extends BlockListener {
                 }
                 //oreRespawn.brokenBlockList.add(BrokenBlock);
                 Date dt = new Date();
-                //dt.setTime(dt.getTime() + (1000*config.respawnDelay));
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String uhrzeit = sdf.format(dt);
 
-                blacklist.addBlocksToSpawnList(BrokenBlock, uhrzeit);
+                blacklist.addBlocksToSpawnList(BrokenBlock, BrokenBlock.getTypeId(), uhrzeit);
             }
         }
         super.onBlockBreak(event);

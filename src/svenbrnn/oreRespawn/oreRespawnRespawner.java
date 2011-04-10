@@ -19,7 +19,7 @@ public class oreRespawnRespawner extends Thread {
 
     boolean stoprequested;
     private int stdMaxDistance;
-    private List<Block> brokenBlockList = new ArrayList<Block>();
+    private List<oreRespawnBlockToRespawn> brokenBlockList = new ArrayList<oreRespawnBlockToRespawn>();
     private oreRespawnBlacklistWorker blacklist;
 
     public oreRespawnRespawner(int stdMaxDistance, oreRespawnBlacklistWorker blacklist) {
@@ -36,28 +36,26 @@ public class oreRespawnRespawner extends Thread {
 
     public void run() {
         while (!stoprequested) {
-            if(brokenBlockList.isEmpty())
-            {
+            if (brokenBlockList.isEmpty()) {
                 brokenBlockList = blacklist.getBlocksFromSpawnListAndDelIt();
 
                 try {
                     Thread.sleep(10000);
                 } catch (InterruptedException ex) {
-                   
                 }
                 continue;
             }
 
-            Block BrokenBlock = brokenBlockList.get(0);
+            Block BrokenBlock = brokenBlockList.get(0).getBlock();
             //System.out.println("[oreRespawn] Block auf x:" + BrokenBlock.getX() + " y:" + BrokenBlock.getY() + " z:" + BrokenBlock.getZ() + " abgebaut");
-            int blockType = BrokenBlock.getTypeId();
+            int blockType = brokenBlockList.get(0).getType();
             int x = BrokenBlock.getX();
             int y = BrokenBlock.getY();
             int z = BrokenBlock.getZ();
             World wo = BrokenBlock.getWorld();
 
             int maxheight = 127;
-            switch (BrokenBlock.getTypeId()) {
+            switch (blockType) {
                 case 14:
                     maxheight = 35;
                     break;
@@ -86,7 +84,7 @@ public class oreRespawnRespawner extends Thread {
                 for (int j = z - maxDistance; j < z + maxDistance; j++) {
                     for (int k = 0; k < maxheight - 1; k++) {
                         //System.out.println("[oreRespawn] x:" + i + " y:" + k + " z:" + j + "");
-                        if (wo.getBlockAt(new Location(wo, i, k, j)).getTypeId() == 0 && wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() != 0) {
+                        if (wo.getBlockAt(new Location(wo, i, k, j)).getTypeId() == 0 && wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() != 0 && wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() != 18) {
                             BlockList.add(wo.getBlockAt(new Location(wo, i, k, j)));
                             //System.out.println("[oreRespawn] Block in Liste: x:" + i + " y:" + k + " z:" + j + " abgebaut");
                         }
@@ -105,7 +103,14 @@ public class oreRespawnRespawner extends Thread {
             do {
                 nextInt = rnd.nextInt(BlockList.size());
 
+
                 Block chBl = BlockList.get(nextInt);
+                try {
+                    chBl.getWorld().loadChunk(chBl.getChunk());
+                } catch (Exception e){
+
+                }
+                
                 if (chBl.getLightLevel() < 4 && tryed < 20) {
                     continue;
                 } else if (tryed == 20) {
@@ -113,8 +118,8 @@ public class oreRespawnRespawner extends Thread {
                 }
 
                 chBl.setTypeId(blockType);
+                System.out.println("[oreRespawn] " + brokenBlockList.get(0).getType() + " Block auf x:" + chBl.getX() + " y:" + chBl.getY() + " z:" + chBl.getZ() + " gespawnt");
                 brokenBlockList.remove(0);
-                System.out.println("[oreRespawn] Block auf x:" + chBl.getX() + " y:" + chBl.getY() + " z:" + chBl.getZ() + " gespawnt");
                 break;
             } while (true);
         }

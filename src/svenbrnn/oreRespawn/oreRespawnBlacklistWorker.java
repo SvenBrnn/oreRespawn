@@ -34,12 +34,12 @@ public class oreRespawnBlacklistWorker {
         db.deleteBlockFromBlacklist(id);
     }
 
-    public List<Block> getBlocksFromSpawnListAndDelIt()
+    public List<oreRespawnBlockToRespawn> getBlocksFromSpawnListAndDelIt()
     {
         return db.getBlocksFromSpawnListAndDelIt();
     }
 
-    public void addBlocksToSpawnList(Block blk, String dateTime) {
-        db.addBlocksToSpawnList(blk.getX(), blk.getY(), blk.getZ(), blk.getWorld().getName(), dateTime);
+    public void addBlocksToSpawnList(Block blk, int typ, String dateTime) {
+        db.addBlocksToSpawnList(blk.getX(), blk.getY(), blk.getZ(), typ, blk.getWorld().getName(), dateTime);
     }
 }

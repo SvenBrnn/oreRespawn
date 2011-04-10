@@ -15,7 +15,6 @@ import java.util.Date;
 import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.Server;
-import org.bukkit.block.Block;
 
 /**
  *
@@ -53,6 +52,7 @@ public class oreRespawnDatabase {
                     + "`x` INT( 6 ) NOT NULL ,"
                     + "`y` INT( 6 ) NOT NULL ,"
                     + "`z` INT( 6 ) NOT NULL ,"
+                    + "`typ` INT( 6 ) NOT NULL ,"
                     + "`world` INT( 6 ) NOT NULL,"
                     + "`time` DATETIME NOT NULL)");
         } catch (Exception e) {
@@ -93,30 +93,30 @@ public class oreRespawnDatabase {
         }
     }
 
-    public void addBlocksToSpawnList(int x, int y, int z, String world, String dateTime) {
+    public void addBlocksToSpawnList(int x, int y, int z, int typ, String world, String dateTime) {
         try {
             Statement sql = conn.createStatement();
-            sql.execute("INSERT INTO ore_spawnlist(x, y, z, world, time) VALUES('" + x + "','" + y + "','" + z + "','" + world + "','" + dateTime + "')");
+            sql.execute("INSERT INTO ore_spawnlist(x, y, z, typ, world, time) VALUES('" + x + "','" + y + "','" + z + "','" + typ + "','" + world + "','" + dateTime + "')");
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
     }
 
-    public List<Block> getBlocksFromSpawnListAndDelIt() {
-        List<Block> blList = new ArrayList<Block>();
+    public List<oreRespawnBlockToRespawn> getBlocksFromSpawnListAndDelIt() {
+        List<oreRespawnBlockToRespawn> blList = new ArrayList<oreRespawnBlockToRespawn>();
         try {
             Date dt = new Date();
-            dt.setTime(dt.getTime() + (1000 * config.respawnDelay));
+            dt.setTime(dt.getTime() - (1000 * config.respawnDelay));
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String uhrzeit = sdf.format(dt);
 
             Statement sql = conn.createStatement();
-            ResultSet res = sql.executeQuery("SELECT x, y, z, world, id FROM ore_spawnlist WHERE time < '" + uhrzeit + "'");
+            ResultSet res = sql.executeQuery("SELECT x, y, z, typ, world, id FROM ore_spawnlist WHERE time < DATETIME('" + uhrzeit + "')");
             List<Integer> idList = new ArrayList<Integer>();
 
             while (res.next()) {
-                blList.add(server.getWorld(res.getString(3)).getBlockAt(new Location(server.getWorld(res.getString(3)), res.getInt(0), res.getInt(1), res.getInt(2))));
-                idList.add(res.getInt(4));
+                blList.add(new oreRespawnBlockToRespawn(server.getWorld(res.getString("world")).getBlockAt(new Location(server.getWorld(res.getString("world")), res.getInt("x"), res.getInt("y"), res.getInt("z"))),res.getInt("typ"))) ;
+                idList.add(res.getInt("id"));
             }
 
             for (int i = 0; i < idList.size(); i++) {

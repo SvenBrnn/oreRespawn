@@ -48,34 +48,26 @@ public class oreRespawnConfig {
         enabledWorld = new ArrayList<World>();
         config.load();
         cfgMaxDistance = new Integer((String) config.getProperty("maxDistance"));
-        respawnDelay = new Integer((String) config.getProperty("respawnDelayInSec"));
-
-        if((String) config.getProperty("respawnDelayInSec") == null)
-        {
+        if ((String) config.getProperty("respawnDelayInSec") == null) {
             respawnDelay = 0;
             config.setProperty("respawnDelayInSec", "0");
+        } else {
+            respawnDelay = new Integer((String) config.getProperty("respawnDelayInSec"));
         }
 
-        for(int i = 0; i < worlds.size(); i++)
-        {
+        for (int i = 0; i < worlds.size(); i++) {
             String var = (String) config.getProperty(worlds.get(i).getName() + "enabled");
-            if(var == null || var.equals(""))
-            {
+            if (var == null || var.equals("")) {
                 var = "true";
                 config.setProperty(worlds.get(i).getName() + "enabled", "true");
             }
 
-            if(var == null ? "true" == null : var.equals("true"))
-            {
+            if (var == null ? "true" == null : var.equals("true")) {
                 enabledWorld.add(worlds.get(i));
-                System.out.println("[oreRespawn] "+worlds.get(i).getName() + " enabled!");
-            }
-            else if(var == null ? "false" == null : var.equals("false"))
-            {
-                System.out.println("[oreRespawn] "+worlds.get(i).getName() + " disabled!");
-            }
-            else
-            {
+                System.out.println("[oreRespawn] " + worlds.get(i).getName() + " enabled!");
+            } else if (var == null ? "false" == null : var.equals("false")) {
+                System.out.println("[oreRespawn] " + worlds.get(i).getName() + " disabled!");
+            } else {
                 System.out.println("[oreRespawn] Error in Config!");
                 return;
             }
@@ -85,8 +77,7 @@ public class oreRespawnConfig {
 
     private void createConfig() {
         List<World> worlds = plugin.getServer().getWorlds();
-        for(int i = 0; i < worlds.size(); i++)
-        {
+        for (int i = 0; i < worlds.size(); i++) {
             config.setProperty(worlds.get(i).getName() + "enabled", "true");
         }
         config.setProperty("maxDistance", "50");
