@@ -40,7 +40,7 @@ public class oreRespawnRespawner extends Thread {
                 brokenBlockList = blacklist.getBlocksFromSpawnListAndDelIt();
 
                 try {
-                    Thread.sleep(10000);
+                    Thread.sleep(5000);
                 } catch (InterruptedException ex) {
                 }
                 continue;
@@ -114,6 +114,7 @@ public class oreRespawnRespawner extends Thread {
                 if (chBl.getLightLevel() < 4 && tryed < 20) {
                     continue;
                 } else if (tryed == 20) {
+                    brokenBlockList.remove(0);
                     break;
                 }
 
