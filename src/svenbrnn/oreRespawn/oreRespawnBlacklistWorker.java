@@ -39,6 +39,11 @@ public class oreRespawnBlacklistWorker {
         return db.getBlocksFromSpawnListAndDelIt();
     }
 
+    public List<oreRespawnBlockToRespawn> getBlocksFromSpawnListAndDelItAll()
+    {
+        return db.getBlocksFromSpawnListAndDelItAll();
+    }
+
     public void addBlocksToSpawnList(Block blk, int typ, String dateTime) {
         db.addBlocksToSpawnList(blk.getX(), blk.getY(), blk.getZ(), typ, blk.getWorld().getName(), dateTime);
     }

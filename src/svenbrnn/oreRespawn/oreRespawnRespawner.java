@@ -21,6 +21,7 @@ public class oreRespawnRespawner extends Thread {
     private int stdMaxDistance;
     private List<oreRespawnBlockToRespawn> brokenBlockList = new ArrayList<oreRespawnBlockToRespawn>();
     private oreRespawnBlacklistWorker blacklist;
+    private boolean instandSpawn;
 
     public oreRespawnRespawner(int stdMaxDistance, oreRespawnBlacklistWorker blacklist) {
         super();
@@ -28,16 +29,26 @@ public class oreRespawnRespawner extends Thread {
         this.stdMaxDistance = stdMaxDistance;
         this.blacklist = blacklist;
         this.setPriority(Thread.MIN_PRIORITY);
+        instandSpawn = false;
     }
 
     public synchronized void requestStop() {
         stoprequested = true;
     }
 
+    public synchronized void spawnNow() {
+        instandSpawn = true;
+    }
+
     public void run() {
         while (!stoprequested) {
             if (brokenBlockList.isEmpty()) {
-                brokenBlockList = blacklist.getBlocksFromSpawnListAndDelIt();
+                if (instandSpawn) {
+                    instandSpawn=false;
+                    brokenBlockList = blacklist.getBlocksFromSpawnListAndDelItAll();
+                } else {
+                    brokenBlockList = blacklist.getBlocksFromSpawnListAndDelIt();
+                }
 
                 try {
                     Thread.sleep(5000);
@@ -107,10 +118,9 @@ public class oreRespawnRespawner extends Thread {
                 Block chBl = BlockList.get(nextInt);
                 try {
                     chBl.getWorld().loadChunk(chBl.getChunk());
-                } catch (Exception e){
-
+                } catch (Exception e) {
                 }
-                
+
                 if (chBl.getLightLevel() < 4 && tryed < 20) {
                     continue;
                 } else if (tryed == 20) {

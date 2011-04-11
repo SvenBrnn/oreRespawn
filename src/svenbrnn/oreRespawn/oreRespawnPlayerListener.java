@@ -12,7 +12,7 @@ public class oreRespawnPlayerListener extends PlayerListener {
     public oreRespawnPlayerListener(oreRespawn instance) {
         plugin = instance;
     }
-
+    
     //Insert Player related code here
 }
 

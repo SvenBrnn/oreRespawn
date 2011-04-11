@@ -128,4 +128,26 @@ public class oreRespawnDatabase {
         }
         return blList;
     }
+
+    public List<oreRespawnBlockToRespawn> getBlocksFromSpawnListAndDelItAll() {
+        List<oreRespawnBlockToRespawn> blList = new ArrayList<oreRespawnBlockToRespawn>();
+        try {
+            Statement sql = conn.createStatement();
+            ResultSet res = sql.executeQuery("SELECT x, y, z, typ, world, id FROM ore_spawnlist");
+            List<Integer> idList = new ArrayList<Integer>();
+
+            while (res.next()) {
+                blList.add(new oreRespawnBlockToRespawn(server.getWorld(res.getString("world")).getBlockAt(new Location(server.getWorld(res.getString("world")), res.getInt("x"), res.getInt("y"), res.getInt("z"))),res.getInt("typ"))) ;
+                idList.add(res.getInt("id"));
+            }
+
+            for (int i = 0; i < idList.size(); i++) {
+                sql = conn.createStatement();
+                sql.execute("DELETE FROM ore_spawnlist WHERE id=" + idList.get(i));
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return blList;
+    }
 }
