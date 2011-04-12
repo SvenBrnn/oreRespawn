@@ -37,6 +37,8 @@ public class oreRespawnCommandListener {
                 ret = oreRespawnParam(pl);
             } else if (args[0].equals("world")) {
                 ret = worldParam(pl, args);
+            } else if (args[0].equals("maxdistance")) {
+                ret = maxdistanceParam(pl, args);
             } else {
                 ret = defaultParam(pl);
             }
@@ -45,6 +47,29 @@ public class oreRespawnCommandListener {
             pl.sendMessage("[oreRespawn] Permission denied!");
         }
 
+        return ret;
+    }
+
+    private boolean maxdistanceParam(Player pl, String[] args) {
+        boolean ret = false;
+        if (Permissions.has(pl, "orerespawn.maxdistance")) {
+            if (args.length == 2) {
+                boolean maxIsInt = true;
+                int maxRadius = 50;
+                try {
+                    maxRadius = new Integer(args[1]);
+                } catch (Exception e) {
+                    maxIsInt = false;
+                }
+                if (maxIsInt) {
+                    config.changeMaxRadius(maxRadius);
+                    pl.sendMessage("[oreRespawn] New maxdistance set!");
+                } else {
+                    pl.sendMessage("[oreRespawn] Syntax is: /ores maxdistance <value>");
+                }
+            }
+            ret = true;
+        }
         return ret;
     }
 
@@ -63,6 +88,8 @@ public class oreRespawnCommandListener {
         if (Permissions.has(pl, "orerespawn")) {
             pl.sendMessage("[oreRespawn] Parameter List:");
             pl.sendMessage("spawnnow: Spawns all Ore thats not spawned yet");
+            pl.sendMessage("world: Enable or disable Worlds in config");
+            pl.sendMessage("maxdistance: Set the max distance for Ore Respawning in config");
             ret = true;
         }
         return ret;
