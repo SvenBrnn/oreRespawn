@@ -32,21 +32,22 @@ public class oreRespawnCommandListener {
         boolean ret = false;
         String cmd = command.getName().toLowerCase();
         Player pl = (Player) sender;
-        if (cmd.equals("ores")) {
-            if (args[0].equals("spawnnow")) {
-                ret = oreRespawnParam(pl);
-            } else if (args[0].equals("world")) {
-                ret = worldParam(pl, args);
-            } else if (args[0].equals("maxdistance")) {
-                ret = maxdistanceParam(pl, args);
-            } else {
-                ret = defaultParam(pl);
+        if (Permissions != null) {
+            if (cmd.equals("ores")) {
+                if (args[0].equals("spawnnow")) {
+                    ret = oreRespawnParam(pl);
+                } else if (args[0].equals("world")) {
+                    ret = worldParam(pl, args);
+                } else if (args[0].equals("maxdistance")) {
+                    ret = maxdistanceParam(pl, args);
+                } else {
+                    ret = defaultParam(pl);
+                }
+            }
+            if (!ret) {
+                pl.sendMessage("[oreRespawn] Permission denied!");
             }
         }
-        if (!ret) {
-            pl.sendMessage("[oreRespawn] Permission denied!");
-        }
-
         return ret;
     }
 
