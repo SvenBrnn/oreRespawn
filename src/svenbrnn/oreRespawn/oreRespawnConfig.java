@@ -84,4 +84,13 @@ public class oreRespawnConfig {
         config.setProperty("respawnDelayInSec", "50");
         config.save();
     }
+
+    public void changeWorldEnable(String worldname, boolean enable) {
+        if (enable) {
+            config.setProperty(worldname + "enabled", "true");
+        } else {
+            config.setProperty(worldname + "enabled", "false");
+        }
+        config.save();
+    }
 }

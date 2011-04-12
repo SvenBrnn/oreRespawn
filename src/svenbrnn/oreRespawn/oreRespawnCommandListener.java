@@ -5,6 +5,7 @@
 package svenbrnn.oreRespawn;
 
 import com.nijiko.permissions.PermissionHandler;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -32,19 +33,61 @@ public class oreRespawnCommandListener {
         String cmd = command.getName().toLowerCase();
         Player pl = (Player) sender;
         if (cmd.equals("ores")) {
-            if (args[0].endsWith("spawnnow")) {
-                if (Permissions.has(pl, "orerespawn.respawn")) {
-                    respawn.spawnNow();
-                    pl.sendMessage("[oreRespawn] Respawning all Ores!");
-                    ret = true;
+            if (args[0].equals("spawnnow")) {
+                ret = oreRespawnParam(pl);
+            } else if (args[0].equals("world")) {
+                ret = worldParam(pl, args);
+            } else {
+                ret = defaultParam(pl);
+            }
+        }
+        if (!ret) {
+            pl.sendMessage("[oreRespawn] Permission denied!");
+        }
+
+        return ret;
+    }
+
+    private boolean oreRespawnParam(Player pl) {
+        boolean ret = false;
+        if (Permissions.has(pl, "orerespawn.respawn")) {
+            respawn.spawnNow();
+            pl.sendMessage("[oreRespawn] Respawning all Ores!");
+            ret = true;
+        }
+        return ret;
+    }
+
+    private boolean defaultParam(Player pl) {
+        boolean ret = false;
+        if (Permissions.has(pl, "orerespawn")) {
+            pl.sendMessage("[oreRespawn] Parameter List:");
+            pl.sendMessage("spawnnow: Spawns all Ore thats not spawned yet");
+            ret = true;
+        }
+        return ret;
+    }
+
+    private boolean worldParam(Player pl, String[] args) {
+        boolean ret = false;
+        if (Permissions.has(pl, "orerespawn.world")) {
+            if (args.length == 3) {
+                World wo = plugin.getServer().getWorld(args[1]);
+                if (wo != null) {
+                    if (args[0].equals("enable")) {
+                        config.changeWorldEnable(wo.getName(), true);
+                    } else if (args[0].equals("disable")) {
+                        config.changeWorldEnable(wo.getName(), false);
+                    } else {
+                        pl.sendMessage("[oreRespawn] Syntax is: /ores world <worldname> <enable/disable>");
+                    }
+                } else {
+                    pl.sendMessage("[oreRespawn] World " + args[1] + " not found!");
                 }
             } else {
-                if (Permissions.has(pl, "orerespawn")) {
-                    pl.sendMessage("[oreRespawn] Parameter List:");
-                    pl.sendMessage("spawnnow: Spawns all Ore thats not spawned yet");
-                    ret = true;
-                }
+                pl.sendMessage("[oreRespawn] Syntax is: /ores world <worldname> <enable/disable>");
             }
+            ret = true;
         }
         return ret;
     }
