@@ -32,7 +32,7 @@ public class oreRespawnCommandListener {
         boolean ret = false;
         String cmd = command.getName().toLowerCase();
         Player pl = (Player) sender;
-        if (Permissions != null) {
+        if (Permissions != null || pl.isOp()) {
             if (cmd.equals("ores")) {
                 if (args[0].equals("spawnnow")) {
                     ret = oreRespawnParam(pl);
@@ -53,7 +53,7 @@ public class oreRespawnCommandListener {
 
     private boolean maxdistanceParam(Player pl, String[] args) {
         boolean ret = false;
-        if (Permissions.has(pl, "orerespawn.maxdistance")) {
+        if ((Permissions != null && Permissions.has(pl, "orerespawn.maxdistance")) || pl.isOp()) {
             if (args.length == 2) {
                 boolean maxIsInt = true;
                 int maxRadius = 50;
@@ -76,7 +76,7 @@ public class oreRespawnCommandListener {
 
     private boolean oreRespawnParam(Player pl) {
         boolean ret = false;
-        if (Permissions.has(pl, "orerespawn.respawn")) {
+        if ((Permissions != null && Permissions.has(pl, "orerespawn.respawn")) || pl.isOp()) {
             respawn.spawnNow();
             pl.sendMessage("[oreRespawn] Respawning all Ores!");
             ret = true;
@@ -86,7 +86,7 @@ public class oreRespawnCommandListener {
 
     private boolean defaultParam(Player pl) {
         boolean ret = false;
-        if (Permissions.has(pl, "orerespawn")) {
+        if ((Permissions != null && Permissions.has(pl, "orerespawn")) || pl.isOp()) {
             pl.sendMessage("[oreRespawn] Parameter List:");
             pl.sendMessage("spawnnow: Spawns all Ore thats not spawned yet");
             pl.sendMessage("world: Enable or disable Worlds in config");
@@ -98,7 +98,7 @@ public class oreRespawnCommandListener {
 
     private boolean worldParam(Player pl, String[] args) {
         boolean ret = false;
-        if (Permissions.has(pl, "orerespawn.world")) {
+        if ((Permissions != null && Permissions.has(pl, "orerespawn.world")) || pl.isOp()) {
             if (args.length == 3) {
                 World wo = plugin.getServer().getWorld(args[1]);
                 if (wo != null) {
