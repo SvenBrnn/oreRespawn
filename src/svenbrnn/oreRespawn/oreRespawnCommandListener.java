@@ -21,11 +21,14 @@ public class oreRespawnCommandListener {
     private oreRespawnRespawner respawn;
     private oreRespawnConfig config;
     private PermissionHandler Permissions;
+    private oreRespawnDBAndBlacklistWorker blacklist;
 
-    oreRespawnCommandListener(Plugin plugin, oreRespawnRespawner oreRespawn, oreRespawnConfig configer, PermissionHandler Permissions) {
+    oreRespawnCommandListener(Plugin plugin, oreRespawnRespawner oreRespawn, oreRespawnConfig configer, PermissionHandler Permissions, oreRespawnDBAndBlacklistWorker blacklist) {
         this.plugin = plugin;
         this.respawn = oreRespawn;
         this.config = configer;
+        this.Permissions = Permissions;
+        this.blacklist = blacklist;
     }
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -40,6 +43,8 @@ public class oreRespawnCommandListener {
                     ret = worldParam(pl, args);
                 } else if (args[0].equals("maxdistance")) {
                     ret = maxdistanceParam(pl, args);
+                } else if (args[0].equals("log")) {
+                    ret = logParam(pl, args);
                 } else {
                     ret = defaultParam(pl);
                 }
@@ -116,6 +121,40 @@ public class oreRespawnCommandListener {
                 pl.sendMessage("[oreRespawn] Syntax is: /ores world <worldname> <enable/disable>");
             }
             ret = true;
+        }
+        return ret;
+    }
+
+    private boolean logParam(Player pl, String[] args) {
+        boolean ret = false;
+        if (args[1].equals("show")) {
+            if ((Permissions != null && Permissions.has(pl, "orerespawn.log.show")) || pl.isOp()) {
+                pl.sendMessage("[oreRespawn] Num blocks mined per ore:");
+                int actOreNum = 0;
+                actOreNum = blacklist.getNumOreMined(14);
+                pl.sendMessage("Gold:" + actOreNum);
+                actOreNum = blacklist.getNumOreMined(15);
+                pl.sendMessage("Iron:" + actOreNum);
+                actOreNum = blacklist.getNumOreMined(16);
+                pl.sendMessage("Coal" + actOreNum);
+                actOreNum = blacklist.getNumOreMined(21);
+                pl.sendMessage("Lapis Lazuli:" + actOreNum);
+                actOreNum = blacklist.getNumOreMined(56);
+                pl.sendMessage("Diamond:" + actOreNum);
+                actOreNum = blacklist.getNumOreMined(73);
+                pl.sendMessage("Redstone:" + actOreNum);
+                ret = true;
+            }
+        } else if (args[1].equals("clear")) {
+            if ((Permissions != null && Permissions.has(pl, "orerespawn.log.clear")) || pl.isOp()) {
+                blacklist.clearAllOreMined();
+                ret = true;
+            }
+        } else {
+            if ((Permissions != null && (Permissions.has(pl, "orerespawn.log.show") || Permissions.has(pl, "orerespawn.log.clear"))) || pl.isOp()) {
+                pl.sendMessage("[oreRespawn] The parameters for /ore log are show or clear");
+                ret = true;
+            }
         }
         return ret;
     }

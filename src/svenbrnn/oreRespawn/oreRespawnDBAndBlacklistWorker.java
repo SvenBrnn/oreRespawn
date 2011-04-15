@@ -12,12 +12,12 @@ import org.bukkit.plugin.java.JavaPlugin;
  *
  * @author Sven
  */
-public class oreRespawnBlacklistWorker {
+public class oreRespawnDBAndBlacklistWorker {
 
     private JavaPlugin plugin;
     private oreRespawnDatabase db;
 
-    oreRespawnBlacklistWorker(JavaPlugin plugin, oreRespawnConfig config) {
+    oreRespawnDBAndBlacklistWorker(JavaPlugin plugin, oreRespawnConfig config) {
         this.plugin = plugin;
         db = new oreRespawnDatabase(plugin.getServer(), config);
     }
@@ -34,17 +34,23 @@ public class oreRespawnBlacklistWorker {
         db.deleteBlockFromBlacklist(id);
     }
 
-    public List<oreRespawnBlockToRespawn> getBlocksFromSpawnListAndDelIt()
-    {
+    public List<oreRespawnBlockToRespawn> getBlocksFromSpawnListAndDelIt() {
         return db.getBlocksFromSpawnListAndDelIt();
     }
 
-    public List<oreRespawnBlockToRespawn> getBlocksFromSpawnListAndDelItAll()
-    {
+    public List<oreRespawnBlockToRespawn> getBlocksFromSpawnListAndDelItAll() {
         return db.getBlocksFromSpawnListAndDelItAll();
     }
 
     public void addBlocksToSpawnList(Block blk, int typ, String dateTime) {
         db.addBlocksToSpawnList(blk.getX(), blk.getY(), blk.getZ(), typ, blk.getWorld().getName(), dateTime);
+    }
+
+    public int getNumOreMined(int oreTyp) {
+        return db.getNumOreMined(oreTyp);
+    }
+
+    public void clearAllOreMined() {
+        db.clearAllOreMined();
     }
 }

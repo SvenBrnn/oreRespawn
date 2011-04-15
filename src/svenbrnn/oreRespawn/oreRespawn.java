@@ -25,7 +25,7 @@ public class oreRespawn extends JavaPlugin {
     private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();
     private oreRespawnCommandListener commandListener;
     private oreRespawnBlockListener blockListener;
-    private oreRespawnBlacklistWorker blacklist;
+    private oreRespawnDBAndBlacklistWorker blacklist;
     private oreRespawnRespawner oreRespawn;
     private PermissionHandler Permissions;
 
@@ -36,10 +36,10 @@ public class oreRespawn extends JavaPlugin {
         setupPermissions();
 
         configer = new oreRespawnConfig(this);
-        blacklist = new oreRespawnBlacklistWorker(this, configer);
+        blacklist = new oreRespawnDBAndBlacklistWorker(this, configer);
         oreRespawn = new oreRespawnRespawner(configer.cfgMaxDistance, blacklist);
         blockListener = new oreRespawnBlockListener(this, configer, blacklist, oreRespawn);
-        commandListener = new oreRespawnCommandListener(this,oreRespawn, configer, Permissions);
+        commandListener = new oreRespawnCommandListener(this,oreRespawn, configer, Permissions, blacklist);
 
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvent(Event.Type.BLOCK_BREAK, blockListener, Priority.Lowest, this);

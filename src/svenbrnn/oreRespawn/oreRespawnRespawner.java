@@ -20,10 +20,10 @@ public class oreRespawnRespawner extends Thread {
     boolean stoprequested;
     private int stdMaxDistance;
     private List<oreRespawnBlockToRespawn> brokenBlockList = new ArrayList<oreRespawnBlockToRespawn>();
-    private oreRespawnBlacklistWorker blacklist;
+    private oreRespawnDBAndBlacklistWorker blacklist;
     private boolean instandSpawn;
 
-    public oreRespawnRespawner(int stdMaxDistance, oreRespawnBlacklistWorker blacklist) {
+    public oreRespawnRespawner(int stdMaxDistance, oreRespawnDBAndBlacklistWorker blacklist) {
         super();
         stoprequested = false;
         this.stdMaxDistance = stdMaxDistance;

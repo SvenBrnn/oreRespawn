@@ -13,6 +13,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bukkit.Location;
 import org.bukkit.Server;
 
@@ -55,6 +57,13 @@ public class oreRespawnDatabase {
                     + "`typ` INT( 6 ) NOT NULL ,"
                     + "`world` INT( 6 ) NOT NULL,"
                     + "`time` DATETIME NOT NULL)");
+            sql.execute("CREATE TABLE IF NOT EXISTS ore_minelog "
+                    + "(`id` INTEGER NOT NULL PRIMARY KEY , "
+                    + "`x` INT( 6 ) NOT NULL ,"
+                    + "`y` INT( 6 ) NOT NULL ,"
+                    + "`z` INT( 6 ) NOT NULL ,"
+                    + "`typ` INT( 6 ) NOT NULL ,"
+                    + "`world` INT( 6 ) NOT NULL");
         } catch (Exception e) {
             System.out.println("Could not connect " + e.getMessage());
             System.out.println(e.getCause());
@@ -97,6 +106,7 @@ public class oreRespawnDatabase {
         try {
             Statement sql = conn.createStatement();
             sql.execute("INSERT INTO ore_spawnlist(x, y, z, typ, world, time) VALUES('" + x + "','" + y + "','" + z + "','" + typ + "','" + world + "','" + dateTime + "')");
+            sql.execute("INSERT INTO ore_minelog(x, y, z, typ, world) VALUES('" + x + "','" + y + "','" + z + "','" + typ + "','" + world + "')");
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
@@ -149,5 +159,31 @@ public class oreRespawnDatabase {
             System.out.println(ex.getMessage());
         }
         return blList;
+    }
+
+    public int getNumOreMined(int oreTyp)
+    {
+        int numOre = 0;
+        try {
+            Statement sql = conn.createStatement();
+            ResultSet res = sql.executeQuery("SELECT typ FROM ore_minelog WHERE typ='"+oreTyp+"'");
+            while(res.next())
+            {
+                numOre++;
+            }
+        } catch (SQLException ex) {
+            //Logger.getLogger(oreRespawnDatabase.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return numOre;
+    }
+
+    public void clearAllOreMined()
+    {
+        try {
+            Statement sql = conn.createStatement();
+            sql.execute("DELETE FROM ore_minelog");
+        } catch (SQLException ex) {
+            //Logger.getLogger(oreRespawnDatabase.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
