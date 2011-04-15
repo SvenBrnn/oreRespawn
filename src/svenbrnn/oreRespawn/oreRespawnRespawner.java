@@ -95,7 +95,20 @@ public class oreRespawnRespawner extends Thread {
                 for (int j = z - maxDistance; j < z + maxDistance; j++) {
                     for (int k = 0; k < maxheight - 1; k++) {
                         //System.out.println("[oreRespawn] x:" + i + " y:" + k + " z:" + j + "");
-                        if (wo.getBlockAt(new Location(wo, i, k, j)).getTypeId() == 0 && wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() != 0 && wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() != 18) {
+                        if (wo.getBlockAt(new Location(wo, i, k, j)).getTypeId() == 0 &&
+                            wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() != 0 &&
+                            wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() != 18 &&
+                            (wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() == 14 ||
+                            wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() == 15 ||
+                            wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() == 16 ||
+                            wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() == 21 ||
+                            wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() == 56 ||
+                            wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() == 73 ||
+                            wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() == 73 ||
+                            wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() == 1 ||
+                            wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() == 2 ||
+                            wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() == 3))
+                        {
                             BlockList.add(wo.getBlockAt(new Location(wo, i, k, j)));
                             //System.out.println("[oreRespawn] Block in Liste: x:" + i + " y:" + k + " z:" + j + " abgebaut");
                         }
