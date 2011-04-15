@@ -63,7 +63,7 @@ public class oreRespawnDatabase {
                     + "`y` INT( 6 ) NOT NULL ,"
                     + "`z` INT( 6 ) NOT NULL ,"
                     + "`typ` INT( 6 ) NOT NULL ,"
-                    + "`world` INT( 6 ) NOT NULL");
+                    + "`world` INT( 6 ) NOT NULL)");
         } catch (Exception e) {
             System.out.println("Could not connect " + e.getMessage());
             System.out.println(e.getCause());
