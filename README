@@ -12,6 +12,5 @@ Functions:
 - respawn ore in a Defined Range
 - blacklisting with SQLLite db
 - respawning delay in seconds
-
-TODO:
-- add instant spawn command with Permission support
+- Slash Commands
+- Permission Support
