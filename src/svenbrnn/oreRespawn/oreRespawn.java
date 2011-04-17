@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
@@ -20,10 +21,9 @@ import org.bukkit.plugin.Plugin;
  */
 public class oreRespawn extends JavaPlugin {
 
-    private final oreRespawnPlayerListener playerListener = new oreRespawnPlayerListener(this);
     private oreRespawnConfig configer;
     private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();
-    private oreRespawnCommandListener commandListener;
+    public oreRespawnCommandListener commandListener;
     private oreRespawnBlockListener blockListener;
     private oreRespawnDBAndBlacklistWorker blacklist;
     private oreRespawnRespawner oreRespawn;

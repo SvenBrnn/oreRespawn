@@ -94,8 +94,8 @@ public class oreRespawnConfig {
         config.save();
     }
 
-    public void changeMaxRadius(int maxRadius) {
-        config.setProperty("maxDistance", maxRadius);
+    public void changeMaxRadius(Integer maxRadius) {
+        config.setProperty("maxDistance", maxRadius.toString());
         config.save();
     }
 }

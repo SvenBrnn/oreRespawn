@@ -9,6 +9,9 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerListener;
 import org.bukkit.plugin.Plugin;
 
 /**
@@ -32,28 +35,33 @@ public class oreRespawnCommandListener {
     }
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        boolean ret = false;
-        String cmd = command.getName().toLowerCase();
-        Player pl = (Player) sender;
-        if (Permissions != null || pl.isOp()) {
-            if (cmd.equals("ores")) {
-                if (args[0].equals("spawnnow")) {
-                    ret = oreRespawnParam(pl);
-                } else if (args[0].equals("world")) {
-                    ret = worldParam(pl, args);
-                } else if (args[0].equals("maxdistance")) {
-                    ret = maxdistanceParam(pl, args);
-                } else if (args[0].equals("log")) {
-                    ret = logParam(pl, args);
-                } else {
-                    ret = defaultParam(pl);
+        if (sender instanceof Player) {
+            boolean ret = false;
+            String cmd = label;
+            Player pl = (Player) sender;
+            if (Permissions != null || pl.isOp()) {
+                if (cmd.equals("ores")) {
+                    if (args.length == 0) {
+                        ret = defaultParam(pl);
+                    } else if (args[0].equals("spawnnow")) {
+                        ret = oreRespawnParam(pl);
+                    } else if (args[0].equals("world")) {
+                        ret = worldParam(pl, args);
+                    } else if (args[0].equals("maxdistance")) {
+                        ret = maxdistanceParam(pl, args);
+                    } else if (args[0].equals("log")) {
+                        ret = logParam(pl, args);
+                    } else {
+                        ret = defaultParam(pl);
+                    }
+                    if (!ret) {
+                        pl.sendMessage("[oreRespawn] Permission denied!");
+                    }
                 }
             }
-            if (!ret) {
-                pl.sendMessage("[oreRespawn] Permission denied!");
-            }
+            return ret;
         }
-        return ret;
+        return false;
     }
 
     private boolean maxdistanceParam(Player pl, String[] args) {
@@ -96,6 +104,7 @@ public class oreRespawnCommandListener {
             pl.sendMessage("spawnnow: Spawns all Ore thats not spawned yet");
             pl.sendMessage("world: Enable or disable Worlds in config");
             pl.sendMessage("maxdistance: Set the max distance for Ore Respawning in config");
+            pl.sendMessage("log: Gets the Ore Logging");
             ret = true;
         }
         return ret;
@@ -107,9 +116,9 @@ public class oreRespawnCommandListener {
             if (args.length == 3) {
                 World wo = plugin.getServer().getWorld(args[1]);
                 if (wo != null) {
-                    if (args[0].equals("enable")) {
+                    if (args[2].equals("enable")) {
                         config.changeWorldEnable(wo.getName(), true);
-                    } else if (args[0].equals("disable")) {
+                    } else if (args[2].equals("disable")) {
                         config.changeWorldEnable(wo.getName(), false);
                     } else {
                         pl.sendMessage("[oreRespawn] Syntax is: /ores world <worldname> <enable/disable>");
@@ -127,22 +136,27 @@ public class oreRespawnCommandListener {
 
     private boolean logParam(Player pl, String[] args) {
         boolean ret = false;
-        if (args[1].equals("show")) {
+        if (args.length == 1) {
+            if ((Permissions != null && (Permissions.has(pl, "orerespawn.log.show") || Permissions.has(pl, "orerespawn.log.clear"))) || pl.isOp()) {
+                pl.sendMessage("[oreRespawn] The parameters for /ore log are show or clear");
+                ret = true;
+            }
+        } else if (args[1].equals("show")) {
             if ((Permissions != null && Permissions.has(pl, "orerespawn.log.show")) || pl.isOp()) {
                 pl.sendMessage("[oreRespawn] Num blocks mined per ore:");
                 int actOreNum = 0;
                 actOreNum = blacklist.getNumOreMined(14);
-                pl.sendMessage("Gold:" + actOreNum);
+                pl.sendMessage("Gold: " + actOreNum);
                 actOreNum = blacklist.getNumOreMined(15);
-                pl.sendMessage("Iron:" + actOreNum);
+                pl.sendMessage("Iron: " + actOreNum);
                 actOreNum = blacklist.getNumOreMined(16);
-                pl.sendMessage("Coal" + actOreNum);
+                pl.sendMessage("Coal: " + actOreNum);
                 actOreNum = blacklist.getNumOreMined(21);
-                pl.sendMessage("Lapis Lazuli:" + actOreNum);
+                pl.sendMessage("Lapis Lazuli: " + actOreNum);
                 actOreNum = blacklist.getNumOreMined(56);
-                pl.sendMessage("Diamond:" + actOreNum);
+                pl.sendMessage("Diamond: " + actOreNum);
                 actOreNum = blacklist.getNumOreMined(73);
-                pl.sendMessage("Redstone:" + actOreNum);
+                pl.sendMessage("Redstone: " + actOreNum);
                 ret = true;
             }
         } else if (args[1].equals("clear")) {
