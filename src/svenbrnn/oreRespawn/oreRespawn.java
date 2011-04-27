@@ -37,7 +37,7 @@ public class oreRespawn extends JavaPlugin {
 
         configer = new oreRespawnConfig(this);
         blacklist = new oreRespawnDBAndBlacklistWorker(this, configer);
-        oreRespawn = new oreRespawnRespawner(configer.cfgMaxDistance, blacklist);
+        oreRespawn = new oreRespawnRespawner(configer, blacklist);
         blockListener = new oreRespawnBlockListener(this, configer, blacklist, oreRespawn);
         commandListener = new oreRespawnCommandListener(this,oreRespawn, configer, Permissions, blacklist);
 

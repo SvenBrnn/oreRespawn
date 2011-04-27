@@ -15,14 +15,12 @@ public class oreRespawnBlockListener extends BlockListener {
 
     private final oreRespawn plugin;
     private final oreRespawnConfig config;
-    private int stdMaxDistance = 5;
     private oreRespawnDBAndBlacklistWorker blacklist;
     private oreRespawnRespawner oreRespawn;
 
     public oreRespawnBlockListener(final oreRespawn plugin, final oreRespawnConfig config, final oreRespawnDBAndBlacklistWorker blacklist, final oreRespawnRespawner oreRespawn) {
         this.plugin = plugin;
         this.config = config;
-        stdMaxDistance = config.cfgMaxDistance;
         this.blacklist = blacklist;
         this.oreRespawn = oreRespawn;
     }

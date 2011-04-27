@@ -18,12 +18,12 @@ import org.bukkit.block.Block;
 public class oreRespawnRespawner extends Thread {
 
     boolean stoprequested;
-    private int stdMaxDistance;
+    private oreRespawnConfig stdMaxDistance;
     private List<oreRespawnBlockToRespawn> brokenBlockList = new ArrayList<oreRespawnBlockToRespawn>();
     private oreRespawnDBAndBlacklistWorker blacklist;
     private boolean instandSpawn;
 
-    public oreRespawnRespawner(int stdMaxDistance, oreRespawnDBAndBlacklistWorker blacklist) {
+    public oreRespawnRespawner(oreRespawnConfig stdMaxDistance, oreRespawnDBAndBlacklistWorker blacklist) {
         super();
         stoprequested = false;
         this.stdMaxDistance = stdMaxDistance;
@@ -44,7 +44,7 @@ public class oreRespawnRespawner extends Thread {
         while (!stoprequested) {
             if (brokenBlockList.isEmpty()) {
                 if (instandSpawn) {
-                    instandSpawn=false;
+                    instandSpawn = false;
                     brokenBlockList = blacklist.getBlocksFromSpawnListAndDelItAll();
                 } else {
                     brokenBlockList = blacklist.getBlocksFromSpawnListAndDelIt();
@@ -66,49 +66,55 @@ public class oreRespawnRespawner extends Thread {
             World wo = BrokenBlock.getWorld();
 
             int maxheight = 127;
+            int maxdis = 0;
             switch (blockType) {
                 case 14:
                     maxheight = 35;
+                    maxdis = this.stdMaxDistance.cfgMaxDistance_gold;
                     break;
                 case 15:
                     maxheight = 67;
+                    maxdis = this.stdMaxDistance.cfgMaxDistance_iron;
                     break;
                 case 16:
+                    maxdis = this.stdMaxDistance.cfgMaxDistance_coal;
                     break;
                 case 21:
+                    maxdis = this.stdMaxDistance.cfgMaxDistance_lapis;
                     maxheight = 32;
                     break;
                 case 56:
+                    maxdis = this.stdMaxDistance.cfgMaxDistance_diamond;
                     maxheight = 19;
                     break;
                 case 73:
+                    maxdis = this.stdMaxDistance.cfgMaxDistance_redstone;
                     maxheight = 19;
                     break;
             }
 
             List<Block> BlockList = new ArrayList<Block>();
 
-            int maxDistance = stdMaxDistance - 1;
+            int maxDistance = maxdis - 1;
 
             maxDistance++;
             for (int i = x - maxDistance; i < x + maxDistance; i++) {
                 for (int j = z - maxDistance; j < z + maxDistance; j++) {
                     for (int k = 0; k < maxheight - 1; k++) {
                         //System.out.println("[oreRespawn] x:" + i + " y:" + k + " z:" + j + "");
-                        if (wo.getBlockAt(new Location(wo, i, k, j)).getTypeId() == 0 &&
-                            wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() != 0 &&
-                            wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() != 18 &&
-                            (wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() == 14 ||
-                            wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() == 15 ||
-                            wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() == 16 ||
-                            wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() == 21 ||
-                            wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() == 56 ||
-                            wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() == 73 ||
-                            wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() == 73 ||
-                            wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() == 1 ||
-                            wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() == 2 ||
-                            wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() == 3))
-                        {
+                        if (wo.getBlockAt(new Location(wo, i, k, j)).getTypeId() == 0
+                                && wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() != 0
+                                && wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() != 18
+                                && (wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() == 14
+                                || wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() == 15
+                                || wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() == 16
+                                || wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() == 21
+                                || wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() == 56
+                                || wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() == 73
+                                || wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() == 73
+                                || wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() == 1
+                                || wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() == 2
+                                || wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() == 3)) {
                             BlockList.add(wo.getBlockAt(new Location(wo, i, k, j)));
                             //System.out.println("[oreRespawn] Block in Liste: x:" + i + " y:" + k + " z:" + j + " abgebaut");
                         }

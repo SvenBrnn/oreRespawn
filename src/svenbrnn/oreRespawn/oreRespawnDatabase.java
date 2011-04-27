@@ -115,17 +115,86 @@ public class oreRespawnDatabase {
     public List<oreRespawnBlockToRespawn> getBlocksFromSpawnListAndDelIt() {
         List<oreRespawnBlockToRespawn> blList = new ArrayList<oreRespawnBlockToRespawn>();
         try {
-            Date dt = new Date();
-            dt.setTime(dt.getTime() - (1000 * config.respawnDelay));
+
+            Date dt;
+            int maxdel = 0;
+            maxdel = this.config.respawnDelay_gold;
+            dt = new Date();
+            dt.setTime(dt.getTime() - (1000 * maxdel));
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String uhrzeit = sdf.format(dt);
 
             Statement sql = conn.createStatement();
-            ResultSet res = sql.executeQuery("SELECT x, y, z, typ, world, id FROM ore_spawnlist WHERE time < DATETIME('" + uhrzeit + "')");
+            ResultSet res = sql.executeQuery("SELECT x, y, z, typ, world, id FROM ore_spawnlist WHERE time < DATETIME('" + uhrzeit + "') AND typ='14'");
             List<Integer> idList = new ArrayList<Integer>();
 
             while (res.next()) {
-                blList.add(new oreRespawnBlockToRespawn(server.getWorld(res.getString("world")).getBlockAt(new Location(server.getWorld(res.getString("world")), res.getInt("x"), res.getInt("y"), res.getInt("z"))),res.getInt("typ"))) ;
+                blList.add(new oreRespawnBlockToRespawn(server.getWorld(res.getString("world")).getBlockAt(new Location(server.getWorld(res.getString("world")), res.getInt("x"), res.getInt("y"), res.getInt("z"))), res.getInt("typ")));
+                idList.add(res.getInt("id"));
+            }
+            maxdel = this.config.respawnDelay_iron;
+            dt = new Date();
+            dt.setTime(dt.getTime() - (1000 * maxdel));
+            sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            uhrzeit = sdf.format(dt);
+
+            sql = conn.createStatement();
+            res = sql.executeQuery("SELECT x, y, z, typ, world, id FROM ore_spawnlist WHERE time < DATETIME('" + uhrzeit + "') AND typ='15'");
+
+            while (res.next()) {
+                blList.add(new oreRespawnBlockToRespawn(server.getWorld(res.getString("world")).getBlockAt(new Location(server.getWorld(res.getString("world")), res.getInt("x"), res.getInt("y"), res.getInt("z"))), res.getInt("typ")));
+                idList.add(res.getInt("id"));
+            }
+            maxdel = this.config.respawnDelay_coal;
+            dt = new Date();
+            dt.setTime(dt.getTime() - (1000 * maxdel));
+            sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            uhrzeit = sdf.format(dt);
+
+            sql = conn.createStatement();
+            res = sql.executeQuery("SELECT x, y, z, typ, world, id FROM ore_spawnlist WHERE time < DATETIME('" + uhrzeit + "') AND typ='16'");
+
+            while (res.next()) {
+                blList.add(new oreRespawnBlockToRespawn(server.getWorld(res.getString("world")).getBlockAt(new Location(server.getWorld(res.getString("world")), res.getInt("x"), res.getInt("y"), res.getInt("z"))), res.getInt("typ")));
+                idList.add(res.getInt("id"));
+            }
+            maxdel = this.config.respawnDelay_lapis;
+            dt = new Date();
+            dt.setTime(dt.getTime() - (1000 * maxdel));
+            sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            uhrzeit = sdf.format(dt);
+
+            sql = conn.createStatement();
+            res = sql.executeQuery("SELECT x, y, z, typ, world, id FROM ore_spawnlist WHERE time < DATETIME('" + uhrzeit + "') AND typ='21'");
+
+            while (res.next()) {
+                blList.add(new oreRespawnBlockToRespawn(server.getWorld(res.getString("world")).getBlockAt(new Location(server.getWorld(res.getString("world")), res.getInt("x"), res.getInt("y"), res.getInt("z"))), res.getInt("typ")));
+                idList.add(res.getInt("id"));
+            }
+            maxdel = this.config.respawnDelay_diamond;
+            dt = new Date();
+            dt.setTime(dt.getTime() - (1000 * maxdel));
+            sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            uhrzeit = sdf.format(dt);
+
+            sql = conn.createStatement();
+            res = sql.executeQuery("SELECT x, y, z, typ, world, id FROM ore_spawnlist WHERE time < DATETIME('" + uhrzeit + "') AND typ='56'");
+
+            while (res.next()) {
+                blList.add(new oreRespawnBlockToRespawn(server.getWorld(res.getString("world")).getBlockAt(new Location(server.getWorld(res.getString("world")), res.getInt("x"), res.getInt("y"), res.getInt("z"))), res.getInt("typ")));
+                idList.add(res.getInt("id"));
+            }
+            maxdel = this.config.respawnDelay_redstone;
+            dt = new Date();
+            dt.setTime(dt.getTime() - (1000 * maxdel));
+            sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            uhrzeit = sdf.format(dt);
+
+            sql = conn.createStatement();
+            res = sql.executeQuery("SELECT x, y, z, typ, world, id FROM ore_spawnlist WHERE time < DATETIME('" + uhrzeit + "') AND typ='73'");
+
+            while (res.next()) {
+                blList.add(new oreRespawnBlockToRespawn(server.getWorld(res.getString("world")).getBlockAt(new Location(server.getWorld(res.getString("world")), res.getInt("x"), res.getInt("y"), res.getInt("z"))), res.getInt("typ")));
                 idList.add(res.getInt("id"));
             }
 
@@ -147,7 +216,7 @@ public class oreRespawnDatabase {
             List<Integer> idList = new ArrayList<Integer>();
 
             while (res.next()) {
-                blList.add(new oreRespawnBlockToRespawn(server.getWorld(res.getString("world")).getBlockAt(new Location(server.getWorld(res.getString("world")), res.getInt("x"), res.getInt("y"), res.getInt("z"))),res.getInt("typ"))) ;
+                blList.add(new oreRespawnBlockToRespawn(server.getWorld(res.getString("world")).getBlockAt(new Location(server.getWorld(res.getString("world")), res.getInt("x"), res.getInt("y"), res.getInt("z"))), res.getInt("typ")));
                 idList.add(res.getInt("id"));
             }
 
@@ -161,14 +230,12 @@ public class oreRespawnDatabase {
         return blList;
     }
 
-    public int getNumOreMined(int oreTyp)
-    {
+    public int getNumOreMined(int oreTyp) {
         int numOre = 0;
         try {
             Statement sql = conn.createStatement();
-            ResultSet res = sql.executeQuery("SELECT typ FROM ore_minelog WHERE typ='"+oreTyp+"'");
-            while(res.next())
-            {
+            ResultSet res = sql.executeQuery("SELECT typ FROM ore_minelog WHERE typ='" + oreTyp + "'");
+            while (res.next()) {
                 numOre++;
             }
         } catch (SQLException ex) {
@@ -177,8 +244,7 @@ public class oreRespawnDatabase {
         return numOre;
     }
 
-    public void clearAllOreMined()
-    {
+    public void clearAllOreMined() {
         try {
             Statement sql = conn.createStatement();
             sql.execute("DELETE FROM ore_minelog");
