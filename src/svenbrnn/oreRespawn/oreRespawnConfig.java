@@ -133,6 +133,7 @@ public class oreRespawnConfig {
                 return;
             }
         }
+        config.setProperty("configVersion", "0.5");
         config.save();
     }
 
@@ -165,8 +166,8 @@ public class oreRespawnConfig {
         config.save();
     }
 
-    public void changeMaxRadius(Integer maxRadius) {
-        config.setProperty("maxDistance", maxRadius.toString());
+    public void changeMaxRadius(Integer maxRadius, String world, String ore) {
+        config.setProperty(world + "." + ore + ".maxDistance", maxRadius.toString());
         config.save();
     }
 }
