@@ -50,6 +50,7 @@ public class oreRespawnConfig {
         config.load();
         if ((String) config.getProperty("configVersion") == null || !config.getProperty("configVersion").equals("0.5")) {
             cfgFile.delete();
+            this.config = new Configuration(cfgFile);
             this.createConfig();
         }
         config.load();
@@ -62,65 +63,65 @@ public class oreRespawnConfig {
     private void configLoader() {
         List<World> worlds = plugin.getServer().getWorlds();
         enabledWorld = new ArrayList<World>();
-
+        config.setProperty("config.configVersion", "0.5");
         for (int i = 0; i < worlds.size(); i++) {
-            cfgMaxDistance_coal = new Integer((String) config.getProperty(worlds.get(i).getName() + ".coal.maxDistance"));
-            if ((String) config.getProperty(worlds.get(i).getName() + ".coal.respawnDelayInSec") == null) {
+            cfgMaxDistance_coal = new Integer((String) config.getProperty("config.world." + worlds.get(i).getName() + ".coal.maxDistance"));
+            if ((String) config.getProperty("config.world." + worlds.get(i).getName() + ".coal.respawnDelayInSec") == null) {
                 respawnDelay_coal = 0;
-                config.setProperty(worlds.get(i).getName() + ".coal.respawnDelayInSec", "0");
+                config.setProperty("config.world." + worlds.get(i).getName() + ".coal.respawnDelayInSec", "0");
             } else {
-                respawnDelay_coal = new Integer((String) config.getProperty(worlds.get(i).getName() + ".coal.respawnDelayInSec"));
+                respawnDelay_coal = new Integer((String) config.getProperty("config.world." + worlds.get(i).getName() + ".coal.respawnDelayInSec"));
             }
 
 
-            cfgMaxDistance_iron = new Integer((String) config.getProperty(worlds.get(i).getName() + ".iron.maxDistance"));
-            if ((String) config.getProperty(worlds.get(i).getName() + ".iron.respawnDelayInSec") == null) {
+            cfgMaxDistance_iron = new Integer((String) config.getProperty("config.world." + worlds.get(i).getName() + ".iron.maxDistance"));
+            if ((String) config.getProperty("config.world." + worlds.get(i).getName() + ".iron.respawnDelayInSec") == null) {
                 respawnDelay_iron = 0;
                 config.setProperty(worlds.get(i).getName() + ".iron.respawnDelayInSec", "0");
             } else {
-                respawnDelay_iron = new Integer((String) config.getProperty(worlds.get(i).getName() + ".iron.respawnDelayInSec"));
+                respawnDelay_iron = new Integer((String) config.getProperty("config.world." + worlds.get(i).getName() + ".iron.respawnDelayInSec"));
             }
 
 
-            cfgMaxDistance_gold = new Integer((String) config.getProperty(worlds.get(i).getName() + ".gold.maxDistance"));
-            if ((String) config.getProperty(worlds.get(i).getName() + ".gold.respawnDelayInSec") == null) {
+            cfgMaxDistance_gold = new Integer((String) config.getProperty("config.world." + worlds.get(i).getName() + ".gold.maxDistance"));
+            if ((String) config.getProperty("config.world." + worlds.get(i).getName() + ".gold.respawnDelayInSec") == null) {
                 respawnDelay_gold = 0;
                 config.setProperty(worlds.get(i).getName() + ".gold.respawnDelayInSec", "0");
             } else {
-                respawnDelay_gold = new Integer((String) config.getProperty(worlds.get(i).getName() + ".gold.respawnDelayInSec"));
+                respawnDelay_gold = new Integer((String) config.getProperty("config.world." + worlds.get(i).getName() + ".gold.respawnDelayInSec"));
             }
 
 
-            cfgMaxDistance_diamond = new Integer((String) config.getProperty(worlds.get(i).getName() + ".diamond.maxDistance"));
-            if ((String) config.getProperty(worlds.get(i).getName() + ".diamond.respawnDelayInSec") == null) {
+            cfgMaxDistance_diamond = new Integer((String) config.getProperty("config.world." + worlds.get(i).getName() + ".diamond.maxDistance"));
+            if ((String) config.getProperty("config.world." + worlds.get(i).getName() + ".diamond.respawnDelayInSec") == null) {
                 respawnDelay_diamond = 0;
                 config.setProperty(worlds.get(i).getName() + ".diamond.respawnDelayInSec", "0");
             } else {
-                respawnDelay_diamond = new Integer((String) config.getProperty(worlds.get(i).getName() + ".diamond.respawnDelayInSec"));
+                respawnDelay_diamond = new Integer((String) config.getProperty("config.world." + worlds.get(i).getName() + ".diamond.respawnDelayInSec"));
             }
 
 
-            cfgMaxDistance_lapis = new Integer((String) config.getProperty(worlds.get(i).getName() + ".lapis.maxDistance"));
-            if ((String) config.getProperty(worlds.get(i).getName() + ".lapis.respawnDelayInSec") == null) {
+            cfgMaxDistance_lapis = new Integer((String) config.getProperty("config.world." + worlds.get(i).getName() + ".lapis.maxDistance"));
+            if ((String) config.getProperty("config.world." + worlds.get(i).getName() + ".lapis.respawnDelayInSec") == null) {
                 respawnDelay_lapis = 0;
                 config.setProperty(worlds.get(i).getName() + ".lapis.respawnDelayInSec", "0");
             } else {
-                respawnDelay_lapis = new Integer((String) config.getProperty(worlds.get(i).getName() + ".lapis.respawnDelayInSec"));
+                respawnDelay_lapis = new Integer((String) config.getProperty("config.world." + worlds.get(i).getName() + ".lapis.respawnDelayInSec"));
             }
 
 
-            cfgMaxDistance_redstone = new Integer((String) config.getProperty(worlds.get(i).getName() + ".redstone.maxDistance"));
-            if ((String) config.getProperty(worlds.get(i).getName() + ".redstone.respawnDelayInSec") == null) {
+            cfgMaxDistance_redstone = new Integer((String) config.getProperty("config.world." + worlds.get(i).getName() + ".redstone.maxDistance"));
+            if ((String) config.getProperty("config.world." + worlds.get(i).getName() + ".redstone.respawnDelayInSec") == null) {
                 respawnDelay_redstone = 0;
                 config.setProperty(worlds.get(i).getName() + ".redstone.respawnDelayInSec", "0");
             } else {
-                respawnDelay_redstone = new Integer((String) config.getProperty(worlds.get(i).getName() + ".redstone.respawnDelayInSec"));
+                respawnDelay_redstone = new Integer((String) config.getProperty("config.world." + worlds.get(i).getName() + ".redstone.respawnDelayInSec"));
             }
 
-            String var = (String) config.getProperty(worlds.get(i).getName() + ".enabled");
+            String var = (String) config.getProperty("config.world." + worlds.get(i).getName() + ".enabled");
             if (var == null || var.equals("")) {
                 var = "true";
-                config.setProperty(worlds.get(i).getName() + ".enabled", "true");
+                config.setProperty("config.world." + worlds.get(i).getName() + ".enabled", "true");
             }
 
             if (var == null ? "true" == null : var.equals("true")) {
@@ -133,26 +134,28 @@ public class oreRespawnConfig {
                 return;
             }
         }
-        config.setProperty("configVersion", "0.5");
+
         config.save();
     }
 
-    private void createConfig() {
+    private void createConfig() {        
+
         List<World> worlds = plugin.getServer().getWorlds();
         for (int i = 0; i < worlds.size(); i++) {
-            config.setProperty(worlds.get(i).getName() + ".enabled", "true");
-            config.setProperty(worlds.get(i).getName() + ".coal.maxDistance", "50");
-            config.setProperty(worlds.get(i).getName() + ".coal.respawnDelayInSec", "50");
-            config.setProperty(worlds.get(i).getName() + ".iron.maxDistance", "50");
-            config.setProperty(worlds.get(i).getName() + ".iron.respawnDelayInSec", "50");
-            config.setProperty(worlds.get(i).getName() + ".gold.maxDistance", "50");
-            config.setProperty(worlds.get(i).getName() + ".gold.respawnDelayInSec", "50");
-            config.setProperty(worlds.get(i).getName() + ".lapis.maxDistance", "50");
-            config.setProperty(worlds.get(i).getName() + ".lapis.respawnDelayInSec", "50");
-            config.setProperty(worlds.get(i).getName() + ".diamond.maxDistance", "50");
-            config.setProperty(worlds.get(i).getName() + ".diamond.respawnDelayInSec", "50");
-            config.setProperty(worlds.get(i).getName() + ".redstone.maxDistance", "50");
-            config.setProperty(worlds.get(i).getName() + ".redstone.respawnDelayInSec", "50");
+            config.setProperty("config.configVersion", "0.5");
+            config.setProperty("config.world." + worlds.get(i).getName() + ".enabled", "true");
+            config.setProperty("config.world." + worlds.get(i).getName() + ".coal.maxDistance", "50");
+            config.setProperty("config.world." + worlds.get(i).getName() + ".coal.respawnDelayInSec", "50");
+            config.setProperty("config.world." + worlds.get(i).getName() + ".iron.maxDistance", "50");
+            config.setProperty("config.world." + worlds.get(i).getName() + ".iron.respawnDelayInSec", "50");
+            config.setProperty("config.world." + worlds.get(i).getName() + ".gold.maxDistance", "50");
+            config.setProperty("config.world." + worlds.get(i).getName() + ".gold.respawnDelayInSec", "50");
+            config.setProperty("config.world." + worlds.get(i).getName() + ".lapis.maxDistance", "50");
+            config.setProperty("config.world." + worlds.get(i).getName() + ".lapis.respawnDelayInSec", "50");
+            config.setProperty("config.world." + worlds.get(i).getName() + ".diamond.maxDistance", "50");
+            config.setProperty("config.world." + worlds.get(i).getName() + ".diamond.respawnDelayInSec", "50");
+            config.setProperty("config.world." + worlds.get(i).getName() + ".redstone.maxDistance", "50");
+            config.setProperty("config.world." + worlds.get(i).getName() + ".redstone.respawnDelayInSec", "50");
         }
         config.save();
     }
