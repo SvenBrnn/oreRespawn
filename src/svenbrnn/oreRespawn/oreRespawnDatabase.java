@@ -118,6 +118,8 @@ public class oreRespawnDatabase {
 
             Date dt;
             int maxdel = 0;
+
+            //Get Gold
             maxdel = this.config.respawnDelay_gold;
             dt = new Date();
             dt.setTime(dt.getTime() - (1000 * maxdel));
@@ -132,6 +134,8 @@ public class oreRespawnDatabase {
                 blList.add(new oreRespawnBlockToRespawn(server.getWorld(res.getString("world")).getBlockAt(new Location(server.getWorld(res.getString("world")), res.getInt("x"), res.getInt("y"), res.getInt("z"))), res.getInt("typ")));
                 idList.add(res.getInt("id"));
             }
+
+            //Get Iron
             maxdel = this.config.respawnDelay_iron;
             dt = new Date();
             dt.setTime(dt.getTime() - (1000 * maxdel));
@@ -142,9 +146,12 @@ public class oreRespawnDatabase {
             res = sql.executeQuery("SELECT x, y, z, typ, world, id FROM ore_spawnlist WHERE time < DATETIME('" + uhrzeit + "') AND typ='15'");
 
             while (res.next()) {
-                blList.add(new oreRespawnBlockToRespawn(server.getWorld(res.getString("world")).getBlockAt(new Location(server.getWorld(res.getString("world")), res.getInt("x"), res.getInt("y"), res.getInt("z"))), res.getInt("typ")));
+                if(server.getWorld(res.getString("world")) != null)
+                    blList.add(new oreRespawnBlockToRespawn(server.getWorld(res.getString("world")).getBlockAt(new Location(server.getWorld(res.getString("world")), res.getInt("x"), res.getInt("y"), res.getInt("z"))), res.getInt("typ")));
                 idList.add(res.getInt("id"));
             }
+
+            //Get Cloal
             maxdel = this.config.respawnDelay_coal;
             dt = new Date();
             dt.setTime(dt.getTime() - (1000 * maxdel));
@@ -155,9 +162,12 @@ public class oreRespawnDatabase {
             res = sql.executeQuery("SELECT x, y, z, typ, world, id FROM ore_spawnlist WHERE time < DATETIME('" + uhrzeit + "') AND typ='16'");
 
             while (res.next()) {
-                blList.add(new oreRespawnBlockToRespawn(server.getWorld(res.getString("world")).getBlockAt(new Location(server.getWorld(res.getString("world")), res.getInt("x"), res.getInt("y"), res.getInt("z"))), res.getInt("typ")));
+                if(server.getWorld(res.getString("world")) != null)
+                    blList.add(new oreRespawnBlockToRespawn(server.getWorld(res.getString("world")).getBlockAt(new Location(server.getWorld(res.getString("world")), res.getInt("x"), res.getInt("y"), res.getInt("z"))), res.getInt("typ")));
                 idList.add(res.getInt("id"));
             }
+
+            //Get Lapis
             maxdel = this.config.respawnDelay_lapis;
             dt = new Date();
             dt.setTime(dt.getTime() - (1000 * maxdel));
@@ -168,9 +178,12 @@ public class oreRespawnDatabase {
             res = sql.executeQuery("SELECT x, y, z, typ, world, id FROM ore_spawnlist WHERE time < DATETIME('" + uhrzeit + "') AND typ='21'");
 
             while (res.next()) {
-                blList.add(new oreRespawnBlockToRespawn(server.getWorld(res.getString("world")).getBlockAt(new Location(server.getWorld(res.getString("world")), res.getInt("x"), res.getInt("y"), res.getInt("z"))), res.getInt("typ")));
+                if(server.getWorld(res.getString("world")) != null)
+                    blList.add(new oreRespawnBlockToRespawn(server.getWorld(res.getString("world")).getBlockAt(new Location(server.getWorld(res.getString("world")), res.getInt("x"), res.getInt("y"), res.getInt("z"))), res.getInt("typ")));
                 idList.add(res.getInt("id"));
             }
+
+            //Get Diamond
             maxdel = this.config.respawnDelay_diamond;
             dt = new Date();
             dt.setTime(dt.getTime() - (1000 * maxdel));
@@ -181,9 +194,12 @@ public class oreRespawnDatabase {
             res = sql.executeQuery("SELECT x, y, z, typ, world, id FROM ore_spawnlist WHERE time < DATETIME('" + uhrzeit + "') AND typ='56'");
 
             while (res.next()) {
-                blList.add(new oreRespawnBlockToRespawn(server.getWorld(res.getString("world")).getBlockAt(new Location(server.getWorld(res.getString("world")), res.getInt("x"), res.getInt("y"), res.getInt("z"))), res.getInt("typ")));
+                if(server.getWorld(res.getString("world")) != null)
+                    blList.add(new oreRespawnBlockToRespawn(server.getWorld(res.getString("world")).getBlockAt(new Location(server.getWorld(res.getString("world")), res.getInt("x"), res.getInt("y"), res.getInt("z"))), res.getInt("typ")));
                 idList.add(res.getInt("id"));
             }
+
+            //Get Redstone
             maxdel = this.config.respawnDelay_redstone;
             dt = new Date();
             dt.setTime(dt.getTime() - (1000 * maxdel));
@@ -194,10 +210,12 @@ public class oreRespawnDatabase {
             res = sql.executeQuery("SELECT x, y, z, typ, world, id FROM ore_spawnlist WHERE time < DATETIME('" + uhrzeit + "') AND typ='73'");
 
             while (res.next()) {
-                blList.add(new oreRespawnBlockToRespawn(server.getWorld(res.getString("world")).getBlockAt(new Location(server.getWorld(res.getString("world")), res.getInt("x"), res.getInt("y"), res.getInt("z"))), res.getInt("typ")));
+                if(server.getWorld(res.getString("world")) != null)
+                    blList.add(new oreRespawnBlockToRespawn(server.getWorld(res.getString("world")).getBlockAt(new Location(server.getWorld(res.getString("world")), res.getInt("x"), res.getInt("y"), res.getInt("z"))), res.getInt("typ")));
                 idList.add(res.getInt("id"));
             }
 
+            //Delete all Ores from DB
             for (int i = 0; i < idList.size(); i++) {
                 sql = conn.createStatement();
                 sql.execute("DELETE FROM ore_spawnlist WHERE id=" + idList.get(i));

@@ -48,7 +48,9 @@ public class oreRespawnConfig {
             this.createConfig();
         }
         config.load();
-        if ((String) config.getProperty("configVersion") == null || !config.getProperty("configVersion").equals("0.5")) {
+        String cfgVers = (String) config.getProperty("config.configVersion");
+        if (cfgVers == null || !cfgVers.equals("0.5")) {
+            System.out.println("[OreRespawn] Recreate Config!");
             cfgFile.delete();
             this.config = new Configuration(cfgFile);
             this.createConfig();
