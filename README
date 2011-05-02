@@ -10,7 +10,7 @@ INSTALL:
 
 Permission nodes:
 - orerespawn [General command /ores]
-- orerespawn.maxdistance [/ores maxdistance <number>]- Sets the Maxdistance
+- orerespawn.maxdistance [/ores maxdistance <world> <ore> <number>]- Sets the Maxdistance
 - orerespawn.respawn [/ores spawnnow] - Respawns all Quied Ore
 - orerespawn.world [/ores world <wolrdname> <enable/disable>] - Sets the plugin for World en or disabled. After this Restart is needed.
 - orerespawn.log.show [/ores log show] - Shows the Ore Mined since last Log Clearing
