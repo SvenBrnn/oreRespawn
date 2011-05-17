@@ -29,7 +29,6 @@
       <version>3.6.16</version>
     </dependency>
   </dependencies>
-  <version>0.6</version>
   <build>
     <plugins>
       <plugin>
@@ -55,4 +54,5 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+  <version>0.6</version>
 </project>
