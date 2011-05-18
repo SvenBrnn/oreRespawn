@@ -1,5 +1,5 @@
 name: oreRespawn
-main: svenbrnn.oreRespawn.oreRespawn
+main: svenbrnn.orerespawn.oreRespawn
 version: 0.5
 commands:
   ores:
