@@ -96,7 +96,11 @@ public class oreRespawnRespawner extends Thread {
             List<Block> BlockList = new ArrayList<Block>();
 
             //Dont Respawn Blocks with maxdistance < 1
-            if (maxdis < 1) {
+            if (maxdis < 0) {
+                brokenBlockList.remove(0);
+                continue;
+            } else if (maxdis == 0) {
+                wo.getBlockAt(new Location(wo, x, y, z)).setTypeId(blockType);
                 brokenBlockList.remove(0);
                 continue;
             }
