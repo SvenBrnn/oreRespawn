@@ -64,31 +64,40 @@ public class oreRespawnRespawner extends Thread {
             int y = BrokenBlock.getY();
             int z = BrokenBlock.getZ();
             World wo = BrokenBlock.getWorld();
+            
+            oreRespawnConfigWorld conf = null;
+            for(int j = 0; j < this.stdMaxDistance.worldConfigs.size(); j++) {
+                    if(this.stdMaxDistance.worldConfigs.get(j).worldName.equals(wo.getName()))
+                        conf = this.stdMaxDistance.worldConfigs.get(j);
+            }
+            
+            if(conf == null)
+                continue;
 
             int maxheight = 127;
             int maxdis = 0;
             switch (blockType) {
                 case 14:
                     maxheight = 35;
-                    maxdis = this.stdMaxDistance.cfgMaxDistance_gold;
+                    maxdis = conf.cfgMaxDistance_gold;
                     break;
                 case 15:
                     maxheight = 67;
-                    maxdis = this.stdMaxDistance.cfgMaxDistance_iron;
+                    maxdis = conf.cfgMaxDistance_iron;
                     break;
                 case 16:
-                    maxdis = this.stdMaxDistance.cfgMaxDistance_coal;
+                    maxdis = conf.cfgMaxDistance_coal;
                     break;
                 case 21:
-                    maxdis = this.stdMaxDistance.cfgMaxDistance_lapis;
+                    maxdis = conf.cfgMaxDistance_lapis;
                     maxheight = 32;
                     break;
                 case 56:
-                    maxdis = this.stdMaxDistance.cfgMaxDistance_diamond;
+                    maxdis = conf.cfgMaxDistance_diamond;
                     maxheight = 19;
                     break;
                 case 73:
-                    maxdis = this.stdMaxDistance.cfgMaxDistance_redstone;
+                    maxdis = conf.cfgMaxDistance_redstone;
                     maxheight = 19;
                     break;
             }
