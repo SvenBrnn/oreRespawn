@@ -4,6 +4,8 @@
  */
 package svenbrnn.orerespawn;
 
+import com.sk89q.worldedit.BlockWorldVector;
+import com.sk89q.worldedit.bukkit.BukkitWorld;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -133,7 +135,16 @@ public class oreRespawnRespawner extends Thread {
                                 || wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() == 1
                                 || wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() == 2
                                 || wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() == 3)) {
-                            BlockList.add(wo.getBlockAt(new Location(wo, i, k, j)));
+                            if(!conf.regionRespawnMode) {
+                                BlockList.add(wo.getBlockAt(new Location(wo, i, k, j)));
+                            } else if(conf.regionRespawnMode) {
+                                for(int l = 0; l < oreRespawn.regions.size(); l++){
+                                    if(oreRespawn.regions.get(l).region.contains(new BlockWorldVector(new BukkitWorld(wo), i, j, k))){
+                                        BlockList.add(wo.getBlockAt(new Location(wo, i, k, j)));
+                                        break;
+                                    }
+                                }
+                            }
                             //System.out.println("[oreRespawn] Block in Liste: x:" + i + " y:" + k + " z:" + j + " abgebaut");
                         }
                     }

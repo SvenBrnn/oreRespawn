@@ -53,4 +53,12 @@ public class oreRespawnDBAndBlacklistWorker {
     public void clearAllOreMined() {
         db.clearAllOreMined();
     }
+    
+    public List<oreRespawnRegion> getRegions() {
+        return db.getRegions();
+    }
+    
+    public void deleteRegion(String name) {
+        db.deleteRegion(name);
+    }
 }

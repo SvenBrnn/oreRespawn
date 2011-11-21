@@ -11,6 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
+import java.util.List;
 import org.bukkit.plugin.Plugin;
 
 /**
@@ -27,6 +28,7 @@ public class oreRespawn extends JavaPlugin {
     private oreRespawnDBAndBlacklistWorker blacklist;
     private oreRespawnRespawner oreRespawn;
     private PermissionHandler Permissions;
+    public static List<oreRespawnRegion> regions;
 
     public void onEnable() {
         // TODO: Place any custom enable code here including the registration of any events
@@ -36,6 +38,7 @@ public class oreRespawn extends JavaPlugin {
 
         configer = new oreRespawnConfig(this);
         blacklist = new oreRespawnDBAndBlacklistWorker(this, configer);
+        regions = blacklist.getRegions();
         oreRespawn = new oreRespawnRespawner(configer, blacklist);
         blockListener = new oreRespawnBlockListener(this, configer, blacklist, oreRespawn);
         commandListener = new oreRespawnCommandListener(this,oreRespawn, configer, Permissions, blacklist);

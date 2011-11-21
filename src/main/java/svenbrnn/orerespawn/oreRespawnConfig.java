@@ -4,6 +4,8 @@
  */
 package svenbrnn.orerespawn;
 
+import com.sk89q.worldedit.WorldEdit;
+import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -117,16 +119,27 @@ public class oreRespawnConfig {
                 var = "true";
                 config.setProperty("config.world." + worlds.get(i).getName() + ".enabled", "true");
             }
-
-            if (var == null ? "true" == null : var.equals("true")) {
-                enabledWorld.add(worlds.get(i));
-                System.out.println("[oreRespawn] " + worlds.get(i).getName() + " enabled!");
-            } else if (var == null ? "false" == null : var.equals("false")) {
-                System.out.println("[oreRespawn] " + worlds.get(i).getName() + " disabled!");
-            } else {
-                System.out.println("[oreRespawn] Error in Config!");
-                return;
+            
+            String regionMode = (String) config.getProperty("config.world." + worlds.get(i).getName() + ".regionMode");
+            if (regionMode == null || regionMode.equals("")) {
+                regionMode = "true";
+                config.setProperty("config.world." + worlds.get(i).getName() + ".regionMode", "true");
             }
+
+            if (regionMode == null ? "true" == null : regionMode.equals("true")) {
+                try {
+                    if(!WorldEdit.getVersion().equals("")){
+                        conf.regionRespawnMode = true;
+                        System.out.println("[oreRespawn] " + worlds.get(i).getName() + " is in RegionsMode!");
+                    } else {
+                        System.out.println("[oreRespawn] WorldEdit is needed for RegionsMode!");
+                    }
+                } catch (Exception e) {
+                    System.out.println("[oreRespawn] WorldEdit is needed for RegionsMode!");
+                }
+            }
+            
+            worldConfigs.add(conf);
         }
 
         config.save();
