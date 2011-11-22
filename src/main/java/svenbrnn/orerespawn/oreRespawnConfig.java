@@ -149,8 +149,14 @@ public class oreRespawnConfig {
 
         List<World> worlds = plugin.getServer().getWorlds();
         for (int i = 0; i < worlds.size(); i++) {
-            config.setProperty("config.configVersion", "0.5");
+            config.setProperty("config.configVersion", "0.6");
             config.setProperty("config.world." + worlds.get(i).getName() + ".enabled", "true");
+            
+            if(oreRespawn.worldEdit != null)
+                config.setProperty("config.world." + worlds.get(i).getName() + ".regionMode", "true");
+            else
+                config.setProperty("config.world." + worlds.get(i).getName() + ".regionMode", "false");
+            
             config.setProperty("config.world." + worlds.get(i).getName() + ".coal.maxDistance", "50");
             config.setProperty("config.world." + worlds.get(i).getName() + ".coal.respawnDelayInSec", "50");
             config.setProperty("config.world." + worlds.get(i).getName() + ".iron.maxDistance", "50");
