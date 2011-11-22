@@ -11,6 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
+import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import java.util.List;
 import org.bukkit.plugin.Plugin;
 
@@ -29,12 +30,14 @@ public class oreRespawn extends JavaPlugin {
     private oreRespawnRespawner oreRespawn;
     private PermissionHandler Permissions;
     public static List<oreRespawnRegion> regions;
+    public static WorldEditPlugin worldEdit = null;
 
     public void onEnable() {
         // TODO: Place any custom enable code here including the registration of any events
         // Register our events
 
         setupPermissions();
+        setupWorldEdit();
 
         configer = new oreRespawnConfig(this);
         blacklist = new oreRespawnDBAndBlacklistWorker(this, configer);
@@ -63,6 +66,17 @@ public class oreRespawn extends JavaPlugin {
           } else {
               System.out.println("[OreRespawn] Permission system not detected, defaulting to OP");
           }
+      }
+  }
+    
+  private void setupWorldEdit() {
+      Plugin test = this.getServer().getPluginManager().getPlugin("WorldEdit");
+
+      if (this.Permissions == null) {
+          if (test != null) {
+              worldEdit = (WorldEditPlugin)test;
+              System.out.println("[OreRespawn] WorldEdit detected!");
+          } 
       }
   }
 

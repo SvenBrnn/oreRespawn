@@ -5,9 +5,19 @@
 package svenbrnn.orerespawn;
 
 import com.nijiko.permissions.PermissionHandler;
+import com.sk89q.worldedit.LocalPlayer;
+import com.sk89q.worldedit.bukkit.BukkitPlayer;
+import com.sk89q.worldedit.bukkit.WorldEditAPI;
+import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import com.sk89q.worldedit.bukkit.selections.CuboidSelection;
+import com.sk89q.worldedit.bukkit.selections.RegionSelection;
+import com.sk89q.worldedit.bukkit.selections.Selection;
+import com.sk89q.worldedit.commands.SelectionCommands;
+import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -46,6 +56,8 @@ public class oreRespawnCommandListener {
                         ret = worldParam(pl, args);
                     } else if (args[0].equals("maxdistance")) {
                         ret = maxdistanceParam(pl, args);
+                    } else if (args[0].equals("region")) {
+                        ret = region(sender, args);
                     } else if (args[0].equals("log")) {
                         ret = logParam(pl, args);
                     } else {
@@ -59,6 +71,79 @@ public class oreRespawnCommandListener {
             return ret;
         }
         return false;
+    }
+
+    private boolean region(CommandSender sender, String[] args) {
+        if (sender.getClass() == ConsoleCommandSender.class) {
+            System.out.println("[oreRespawn] Command not allowed from Console!");
+            return false;
+        }
+        boolean ret = false;
+        if (args[1].equals("list")) {
+            if ((Permissions != null && Permissions.has((Player) sender, "orerespawn.region.list")) || sender.isOp()) {
+                ((Player) sender).sendMessage("[oreRespawn] Region List:");
+                for (oreRespawnRegion reg : oreRespawn.regions) {
+                    ((Player) sender).sendMessage("&a- " + reg.name);
+                }
+                ret = true;
+            }
+        } else if (args[1].equals("create")) {
+            if ((Permissions != null && Permissions.has((Player) sender, "orerespawn.region.create")) || sender.isOp()) {
+                if (args.length == 3) {
+                    if (oreRespawn.worldEdit != null) {
+                        Selection selection = oreRespawn.worldEdit.getSelection((Player) sender);
+                        if (selection.getArea() > 0) {
+                            blacklist.addRegion(
+                                    selection.getMinimumPoint().getBlockX(),
+                                    selection.getMinimumPoint().getBlockY(),
+                                    selection.getMinimumPoint().getBlockZ(),
+                                    selection.getMaximumPoint().getBlockX(),
+                                    selection.getMaximumPoint().getBlockY(),
+                                    selection.getMaximumPoint().getBlockZ(),
+                                    args[2],
+                                    selection.getMinimumPoint().getWorld().getName());
+                            
+                            oreRespawn.regions = blacklist.getRegions();
+                            ((Player) sender).sendMessage("[oreRespawn] Region Added!");
+                        } else {
+                            ((Player) sender).sendMessage("[oreRespawn] No Area Selected!");
+                        }
+                    } else {
+                        ((Player) sender).sendMessage("[oreRespawn] WorldEdit is Missing!");
+                    }
+                } else {
+                    ((Player) sender).sendMessage("[oreRespawn] Wrong Syntax!");
+                    ((Player) sender).sendMessage("[oreRespawn] Syntax is /ores create <regionsname>");
+                }
+                ret = true;
+            }
+        } else if (args[1].equals("delete")) {
+            if ((Permissions != null && Permissions.has((Player) sender, "orerespawn.region.delete")) || sender.isOp()) {
+                if (args.length == 3) {
+                    boolean exist = false;
+                    for(int i = 0; i < oreRespawn.regions.size(); i++) {
+                        if(oreRespawn.regions.get(i).name.equals(args[2])){
+                            exist = true;
+                            break;
+                        }
+                    }
+                    if(exist){
+                        blacklist.deleteRegion(args[2]);
+                        oreRespawn.regions = blacklist.getRegions();
+                        ((Player) sender).sendMessage("[oreRespawn] Region "+ args[2] +" Deleted!");
+                    } else {
+                        ((Player) sender).sendMessage("[oreRespawn] Region "+ args[2] +" not found!");
+                    }
+                } else {
+                    ((Player) sender).sendMessage("[oreRespawn] Wrong Syntax!");
+                    ((Player) sender).sendMessage("[oreRespawn] Syntax is /ores delete <regionsname>");
+                }
+                ret = true;
+            }
+        }
+
+
+        return ret;
     }
 
     private boolean maxdistanceParam(Player pl, String[] args) {
@@ -77,31 +162,38 @@ public class oreRespawnCommandListener {
                     maxIsInt = false;
                 }
                 try {
-                    world = new String(args[1]);
-                    if(plugin.getServer().getWorld(world) == null)
+                    world = args[1];
+                    if (plugin.getServer().getWorld(world) == null) {
                         worldExists = false;
+                    }
                 } catch (Exception e) {
                     worldExists = false;
                 }
                 try {
-                    ore = new String(args[2]);
-                    if(!ore.equals("14") && !ore.equals("15") && !ore.equals("16") && !ore.equals("21") && !ore.equals("56")  && !ore.equals("73")
-                        && !ore.equals("gold") && !ore.equals("iron") && !ore.equals("coal") && !ore.equals("lapis") && !ore.equals("diamond")  && !ore.equals("redstone"))
+                    ore = args[2];
+                    if (!ore.equals("14") && !ore.equals("15") && !ore.equals("16") && !ore.equals("21") && !ore.equals("56") && !ore.equals("73")
+                            && !ore.equals("gold") && !ore.equals("iron") && !ore.equals("coal") && !ore.equals("lapis") && !ore.equals("diamond") && !ore.equals("redstone")) {
                         isOre = false;
-                    if(isOre && (ore.equals("14") || ore.equals("15") || ore.equals("16") || ore.equals("21") || ore.equals("56")  || ore.equals("73")))
-                    {
-                        if(ore.equals("14"))
+                    }
+                    if (isOre && (ore.equals("14") || ore.equals("15") || ore.equals("16") || ore.equals("21") || ore.equals("56") || ore.equals("73"))) {
+                        if (ore.equals("14")) {
                             ore = "gold";
-                        if(ore.equals("15"))
+                        }
+                        if (ore.equals("15")) {
                             ore = "iron";
-                        if(ore.equals("16"))
+                        }
+                        if (ore.equals("16")) {
                             ore = "coal";
-                        if(ore.equals("21"))
+                        }
+                        if (ore.equals("21")) {
                             ore = "lapis";
-                        if(ore.equals("56"))
+                        }
+                        if (ore.equals("56")) {
                             ore = "diamond";
-                        if(ore.equals("73"))
+                        }
+                        if (ore.equals("73")) {
                             ore = "redstone";
+                        }
                     }
                 } catch (Exception e) {
                     isOre = false;
@@ -110,9 +202,9 @@ public class oreRespawnCommandListener {
                 if (maxIsInt && worldExists && isOre) {
                     config.changeMaxRadius(maxRadius, world, ore);
                     pl.sendMessage("[oreRespawn] New maxdistance set!");
-                } else if(!worldExists) {
+                } else if (!worldExists) {
                     pl.sendMessage("[oreRespawn] " + world + " is not an existing World!");
-                } else if(!isOre) {
+                } else if (!isOre) {
                     pl.sendMessage("[oreRespawn] " + ore + " is not a ore.");
                     pl.sendMessage("[oreRespawn] Try: gold, iron, coal, lapis, diamond, redstone or its ID's");
                 } else {
