@@ -15,6 +15,9 @@ Permission nodes:
 - orerespawn.world [/ores world <wolrdname> <enable/disable>] - Sets the plugin for World en or disabled. After this Restart is needed.
 - orerespawn.log.show [/ores log show] - Shows the Ore Mined since last Log Clearing
 - orerespawn.log.clear [/ores log clear] - Clears the Ore log
+- orerespawn.region.list [/ores region list] - Lists all Regions
+- orerespawn.region.create [/ores region create <name>] - Creates new Region, needs Selection with WorldEdit
+- orerespawn.region.delete [/ores region delete <name>] - Deletes a Region
 
 Functions:
 - respawn ore in a Defined Range
@@ -23,3 +26,4 @@ Functions:
 - Slash Commands
 - Permission Support
 - per world and per ore config
+- region support (needs WorldEdit)

@@ -13,6 +13,7 @@ import com.sk89q.worldedit.bukkit.selections.CuboidSelection;
 import com.sk89q.worldedit.bukkit.selections.RegionSelection;
 import com.sk89q.worldedit.bukkit.selections.Selection;
 import com.sk89q.worldedit.commands.SelectionCommands;
+import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -79,69 +80,76 @@ public class oreRespawnCommandListener {
             return false;
         }
         boolean ret = false;
-        if (args[1].equals("list")) {
-            if ((Permissions != null && Permissions.has((Player) sender, "orerespawn.region.list")) || sender.isOp()) {
-                ((Player) sender).sendMessage("[oreRespawn] Region List:");
-                for (oreRespawnRegion reg : oreRespawn.regions) {
-                    ((Player) sender).sendMessage("&a- " + reg.name);
-                }
-                ret = true;
-            }
-        } else if (args[1].equals("create")) {
-            if ((Permissions != null && Permissions.has((Player) sender, "orerespawn.region.create")) || sender.isOp()) {
-                if (args.length == 3) {
-                    if (oreRespawn.worldEdit != null) {
-                        Selection selection = oreRespawn.worldEdit.getSelection((Player) sender);
-                        if (selection.getArea() > 0) {
-                            blacklist.addRegion(
-                                    selection.getMinimumPoint().getBlockX(),
-                                    selection.getMinimumPoint().getBlockY(),
-                                    selection.getMinimumPoint().getBlockZ(),
-                                    selection.getMaximumPoint().getBlockX(),
-                                    selection.getMaximumPoint().getBlockY(),
-                                    selection.getMaximumPoint().getBlockZ(),
-                                    args[2],
-                                    selection.getMinimumPoint().getWorld().getName());
-                            
-                            oreRespawn.regions = blacklist.getRegions();
-                            ((Player) sender).sendMessage("[oreRespawn] Region Added!");
-                        } else {
-                            ((Player) sender).sendMessage("[oreRespawn] No Area Selected!");
-                        }
-                    } else {
-                        ((Player) sender).sendMessage("[oreRespawn] WorldEdit is Missing!");
+        if (args.length > 1) {
+            if (args[1].equals("list")) {
+                if ((Permissions != null && Permissions.has((Player) sender, "orerespawn.region.list")) || sender.isOp()) {
+                    ((Player) sender).sendMessage("[oreRespawn] Region List:");
+                    for (oreRespawnRegion reg : oreRespawn.regions) {
+                        ((Player) sender).sendMessage(ChatColor.GREEN + "- " + reg.name);
                     }
-                } else {
-                    ((Player) sender).sendMessage("[oreRespawn] Wrong Syntax!");
-                    ((Player) sender).sendMessage("[oreRespawn] Syntax is /ores create <regionsname>");
+                    ret = true;
                 }
-                ret = true;
-            }
-        } else if (args[1].equals("delete")) {
-            if ((Permissions != null && Permissions.has((Player) sender, "orerespawn.region.delete")) || sender.isOp()) {
-                if (args.length == 3) {
-                    boolean exist = false;
-                    for(int i = 0; i < oreRespawn.regions.size(); i++) {
-                        if(oreRespawn.regions.get(i).name.equals(args[2])){
-                            exist = true;
-                            break;
-                        }
-                    }
-                    if(exist){
-                        blacklist.deleteRegion(args[2]);
-                        oreRespawn.regions = blacklist.getRegions();
-                        ((Player) sender).sendMessage("[oreRespawn] Region "+ args[2] +" Deleted!");
-                    } else {
-                        ((Player) sender).sendMessage("[oreRespawn] Region "+ args[2] +" not found!");
-                    }
-                } else {
-                    ((Player) sender).sendMessage("[oreRespawn] Wrong Syntax!");
-                    ((Player) sender).sendMessage("[oreRespawn] Syntax is /ores delete <regionsname>");
-                }
-                ret = true;
-            }
-        }
+            } else if (args[1].equals("create")) {
+                if ((Permissions != null && Permissions.has((Player) sender, "orerespawn.region.create")) || sender.isOp()) {
+                    if (args.length == 3) {
+                        if (oreRespawn.worldEdit != null) {
+                            Selection selection = oreRespawn.worldEdit.getSelection((Player) sender);
+                            if (selection != null && selection.getArea() > 0) {
+                                blacklist.addRegion(
+                                        selection.getMinimumPoint().getBlockX(),
+                                        selection.getMinimumPoint().getBlockY(),
+                                        selection.getMinimumPoint().getBlockZ(),
+                                        selection.getMaximumPoint().getBlockX(),
+                                        selection.getMaximumPoint().getBlockY(),
+                                        selection.getMaximumPoint().getBlockZ(),
+                                        args[2],
+                                        selection.getMinimumPoint().getWorld().getName());
 
+                                oreRespawn.regions = blacklist.getRegions();
+                                ((Player) sender).sendMessage("[oreRespawn] Region Added!");
+                            } else {
+                                ((Player) sender).sendMessage("[oreRespawn] No Area Selected!");
+                            }
+                        } else {
+                            ((Player) sender).sendMessage("[oreRespawn] WorldEdit is Missing!");
+                        }
+                    } else {
+                        ((Player) sender).sendMessage("[oreRespawn] Wrong Syntax!");
+                        ((Player) sender).sendMessage("[oreRespawn] Syntax is /ores create <regionsname>");
+                    }
+                    ret = true;
+                }
+            } else if (args[1].equals("delete")) {
+                if ((Permissions != null && Permissions.has((Player) sender, "orerespawn.region.delete")) || sender.isOp()) {
+                    if (args.length == 3) {
+                        boolean exist = false;
+                        for (int i = 0; i < oreRespawn.regions.size(); i++) {
+                            if (oreRespawn.regions.get(i).name.equals(args[2])) {
+                                exist = true;
+                                break;
+                            }
+                        }
+                        if (exist) {
+                            blacklist.deleteRegion(args[2]);
+                            oreRespawn.regions = blacklist.getRegions();
+                            ((Player) sender).sendMessage("[oreRespawn] Region " + args[2] + " Deleted!");
+                        } else {
+                            ((Player) sender).sendMessage("[oreRespawn] Region " + args[2] + " not found!");
+                        }
+                    } else {
+                        ((Player) sender).sendMessage("[oreRespawn] Wrong Syntax!");
+                        ((Player) sender).sendMessage("[oreRespawn] Syntax is /ores delete <regionsname>");
+                    }
+                    ret = true;
+                }
+            }
+        } else {
+            ((Player) sender).sendMessage("[oreRespawn] Require Arguments!");
+            ((Player) sender).sendMessage(ChatColor.GREEN + "[oreRespawn] /ores region list");
+            ((Player) sender).sendMessage(ChatColor.GREEN + "[oreRespawn] /ores region create <regionsname>");
+            ((Player) sender).sendMessage(ChatColor.GREEN + "[oreRespawn] /ores region delete <regionsname>");
+            ret = true;
+        }
 
         return ret;
     }
@@ -232,10 +240,11 @@ public class oreRespawnCommandListener {
         boolean ret = false;
         if ((Permissions != null && Permissions.has(pl, "orerespawn")) || pl.isOp()) {
             pl.sendMessage("[oreRespawn] Parameter List:");
-            pl.sendMessage("spawnnow: Spawns all Ore thats not spawned yet");
-            pl.sendMessage("world: Enable or disable Worlds in config");
-            pl.sendMessage("maxdistance: Set the max distance for Ore Respawning in config");
-            pl.sendMessage("log: Gets the Ore Logging");
+            pl.sendMessage(ChatColor.GREEN + "spawnnow: Spawns all Ore thats not spawned yet");
+            pl.sendMessage(ChatColor.GREEN + "world: Enable or disable Worlds in config");
+            pl.sendMessage(ChatColor.GREEN + "maxdistance: Set the max distance for Ore Respawning in config");
+            pl.sendMessage(ChatColor.GREEN + "log: Gets the Ore Logging");
+            pl.sendMessage(ChatColor.GREEN + "region: Region Commands");
             ret = true;
         }
         return ret;

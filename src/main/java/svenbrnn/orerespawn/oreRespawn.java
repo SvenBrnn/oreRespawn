@@ -72,7 +72,7 @@ public class oreRespawn extends JavaPlugin {
   private void setupWorldEdit() {
       Plugin test = this.getServer().getPluginManager().getPlugin("WorldEdit");
 
-      if (this.Permissions == null) {
+      if (worldEdit == null) {
           if (test != null) {
               worldEdit = (WorldEditPlugin)test;
               System.out.println("[OreRespawn] WorldEdit detected!");
