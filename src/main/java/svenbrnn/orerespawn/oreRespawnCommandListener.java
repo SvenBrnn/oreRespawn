@@ -5,16 +5,8 @@
 package svenbrnn.orerespawn;
 
 import com.nijiko.permissions.PermissionHandler;
-import com.sk89q.worldedit.LocalPlayer;
-import com.sk89q.worldedit.bukkit.BukkitPlayer;
-import com.sk89q.worldedit.bukkit.WorldEditAPI;
-import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import com.sk89q.worldedit.bukkit.selections.CuboidSelection;
-import com.sk89q.worldedit.bukkit.selections.RegionSelection;
 import com.sk89q.worldedit.bukkit.selections.Selection;
-import com.sk89q.worldedit.commands.SelectionCommands;
 import org.bukkit.ChatColor;
-import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -123,15 +115,19 @@ public class oreRespawnCommandListener {
                 if ((Permissions != null && Permissions.has((Player) sender, "orerespawn.region.delete")) || sender.isOp()) {
                     if (args.length == 3) {
                         boolean exist = false;
+                        oreRespawnRegion reg = null;
                         for (int i = 0; i < oreRespawn.regions.size(); i++) {
                             if (oreRespawn.regions.get(i).name.equals(args[2])) {
                                 exist = true;
+                                reg = oreRespawn.regions.get(i);
                                 break;
                             }
                         }
                         if (exist) {
                             blacklist.deleteRegion(args[2]);
                             oreRespawn.regions = blacklist.getRegions();
+                            if(reg != null)
+                                oreRespawn.regions.remove(reg);
                             ((Player) sender).sendMessage("[oreRespawn] Region " + args[2] + " Deleted!");
                         } else {
                             ((Player) sender).sendMessage("[oreRespawn] Region " + args[2] + " not found!");
