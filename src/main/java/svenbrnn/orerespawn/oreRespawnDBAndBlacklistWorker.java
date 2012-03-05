@@ -4,6 +4,7 @@
  */
 package svenbrnn.orerespawn;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.block.Block;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -53,15 +54,18 @@ public class oreRespawnDBAndBlacklistWorker {
     public void clearAllOreMined() {
         db.clearAllOreMined();
     }
-    
+
     public List<oreRespawnRegion> getRegions() {
-        return db.getRegions();
+        if (oreRespawn.worldEdit != null) {
+            return db.getRegions();
+        }
+        return new ArrayList<oreRespawnRegion>();
     }
-    
+
     public void deleteRegion(String name) {
         db.deleteRegion(name);
     }
-    
+
     public void addRegion(int x1, int y1, int z1, int x2, int y2, int z2, String region, String world) {
         db.addRegion(x1, y1, z1, x2, y2, z2, region, world);
     }

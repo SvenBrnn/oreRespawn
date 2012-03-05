@@ -135,9 +135,9 @@ public class oreRespawnRespawner extends Thread {
                                 || wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() == 1
                                 || wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() == 2
                                 || wo.getBlockAt(new Location(wo, i, k + 1, j)).getTypeId() == 3)) {
-                            if(!conf.regionRespawnMode) {
+                            if(!conf.regionRespawnMode || oreRespawn.worldEdit == null) {
                                 BlockList.add(wo.getBlockAt(new Location(wo, i, k, j)));
-                            } else if(conf.regionRespawnMode) {
+                            } else if(conf.regionRespawnMode && oreRespawn.worldEdit != null) {
                                 for(int l = 0; l < oreRespawn.regions.size(); l++){
                                     if(oreRespawn.regions.get(l).region.contains(new BlockWorldVector(new BukkitWorld(wo), i, j, k))){
                                         BlockList.add(wo.getBlockAt(new Location(wo, i, k, j)));

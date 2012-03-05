@@ -33,18 +33,24 @@ public class oreRespawn extends JavaPlugin {
     public void onEnable() {
         // TODO: Place any custom enable code here including the registration of any events
         // Register our events
-
+        PluginManager pm = getServer().getPluginManager();
         setupPermissions();
-        setupWorldEdit();
+        if(!setupWorldEdit()) {
+            pm.disablePlugin(this);
+            System.out.println("[OreRespawn] WorldEdit not found! Plugin disabled!");
+            return;
+        }
 
         configer = new oreRespawnConfig(this);
         blacklist = new oreRespawnDBAndBlacklistWorker(this, configer);
-        regions = blacklist.getRegions();
+        
+        if(worldEdit != null)
+            regions = blacklist.getRegions();
         oreRespawn = new oreRespawnRespawner(configer, blacklist);
         blockListener = new oreRespawnBlockListener(this, configer, blacklist, oreRespawn);
         commandListener = new oreRespawnCommandListener(this,oreRespawn, configer, Permissions, blacklist);
 
-        PluginManager pm = getServer().getPluginManager();
+
         //pm.registerEvent(Event.Type.BLOCK_BREAK, blockListener, Priority.Lowest, this);
         //pm.registerEvent(Event.Type.BLOCK_PLACE, blockListener, Priority.Lowest, this);
         pm.registerEvents(blockListener, this);
@@ -68,15 +74,17 @@ public class oreRespawn extends JavaPlugin {
       }
   }
     
-  private void setupWorldEdit() {
+  private boolean setupWorldEdit() {
       Plugin test = this.getServer().getPluginManager().getPlugin("WorldEdit");
 
       if (worldEdit == null) {
           if (test != null) {
               worldEdit = (WorldEditPlugin)test;
               System.out.println("[OreRespawn] WorldEdit detected!");
+              return true;
           } 
       }
+      return false;
   }
 
     public void onDisable() {

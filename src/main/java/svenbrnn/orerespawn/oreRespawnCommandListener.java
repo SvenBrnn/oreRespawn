@@ -49,7 +49,7 @@ public class oreRespawnCommandListener {
                         ret = worldParam(pl, args);
                     } else if (args[0].equals("maxdistance")) {
                         ret = maxdistanceParam(pl, args);
-                    } else if (args[0].equals("region")) {
+                    } else if (args[0].equals("region") && oreRespawn.worldEdit != null) {
                         ret = region(sender, args);
                     } else if (args[0].equals("log")) {
                         ret = logParam(pl, args);

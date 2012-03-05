@@ -31,14 +31,14 @@
             <version>1.15</version>
         </dependency>
         <dependency>
-            <groupId>com.sk89q</groupId>
-            <artifactId>worldedit</artifactId>
-            <version>4.7</version>
-        </dependency>
-        <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>craftbukkit</artifactId>
             <version>1.2.3-R0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sk89q</groupId>
+            <artifactId>worldedit</artifactId>
+            <version>5.2</version>
         </dependency>
     </dependencies>
 <build>
