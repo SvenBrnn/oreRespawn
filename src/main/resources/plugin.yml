@@ -1,6 +1,6 @@
 name: oreRespawn
 main: svenbrnn.orerespawn.oreRespawn
-version: 0.7
+version: 0.8
 commands:
   ores:
    description: Marks you as away-from-keyboard.

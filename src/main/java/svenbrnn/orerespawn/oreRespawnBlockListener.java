@@ -3,15 +3,17 @@ package svenbrnn.orerespawn;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.bukkit.block.Block;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
 /**
  * oreRespawn block listener
  * @author svenbrnn
  */
-public class oreRespawnBlockListener extends BlockListener {
+public class oreRespawnBlockListener implements Listener {
 
     private final oreRespawn plugin;
     private final oreRespawnConfig config;
@@ -25,7 +27,7 @@ public class oreRespawnBlockListener extends BlockListener {
         this.oreRespawn = oreRespawn;
     }
 
-    @Override
+    @EventHandler(priority= EventPriority.LOW)
     public void onBlockBreak(BlockBreakEvent event) {
         Block BrokenBlock = event.getBlock();
         if (config.enabledWorld.contains(BrokenBlock.getWorld())) {
@@ -57,7 +59,6 @@ public class oreRespawnBlockListener extends BlockListener {
                 int num = blacklist.isBlockInBlacklist(BrokenBlock);
                 if (num != -1) {
                     blacklist.removeBlockFromBlacklist(num);
-                    super.onBlockBreak(event);
                     return;
                 }
                 //oreRespawn.brokenBlockList.add(BrokenBlock);
@@ -68,10 +69,9 @@ public class oreRespawnBlockListener extends BlockListener {
                 blacklist.addBlocksToSpawnList(BrokenBlock, BrokenBlock.getTypeId(), uhrzeit);
             }
         }
-        super.onBlockBreak(event);
     }
 
-    @Override
+    @EventHandler(priority= EventPriority.LOW)
     public void onBlockPlace(BlockPlaceEvent event) {
         boolean respawnNeeded = false;
         switch (event.getBlock().getTypeId()) {
@@ -99,6 +99,5 @@ public class oreRespawnBlockListener extends BlockListener {
         if (respawnNeeded) {
             blacklist.addBlocksToBlacklist(event.getBlock());
         }
-        super.onBlockPlace(event);
     }
 }

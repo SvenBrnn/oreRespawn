@@ -4,8 +4,6 @@ import java.util.HashMap;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event.Priority;
-import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
@@ -47,8 +45,9 @@ public class oreRespawn extends JavaPlugin {
         commandListener = new oreRespawnCommandListener(this,oreRespawn, configer, Permissions, blacklist);
 
         PluginManager pm = getServer().getPluginManager();
-        pm.registerEvent(Event.Type.BLOCK_BREAK, blockListener, Priority.Lowest, this);
-        pm.registerEvent(Event.Type.BLOCK_PLACE, blockListener, Priority.Lowest, this);
+        //pm.registerEvent(Event.Type.BLOCK_BREAK, blockListener, Priority.Lowest, this);
+        //pm.registerEvent(Event.Type.BLOCK_PLACE, blockListener, Priority.Lowest, this);
+        pm.registerEvents(blockListener, this);
 
         oreRespawn.start();
         // EXAMPLE: Custom code, here we just output some info so we can check all is well
