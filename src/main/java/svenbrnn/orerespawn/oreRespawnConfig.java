@@ -140,6 +140,13 @@ public class oreRespawnConfig {
                 config.set("config.world." + worlds.get(i).getName() + ".enabled", "true");
             }
             
+            if(var.equals("true")) {
+                enabledWorld.add(worlds.get(i));
+                System.out.println("World " + " enabled");
+            } else {
+                System.out.println("World " + " disabled");
+            }
+            
             String regionMode = (String) config.get("config.world." + worlds.get(i).getName() + ".regionMode");
             if (regionMode == null || regionMode.equals("")) {
                 regionMode = "true";
